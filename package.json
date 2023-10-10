@@ -3,10 +3,16 @@
   "version": "1.0.0",
   "description": "Cinira Flight components for React",
   "exports": {
-    ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
-    }
+    ".": [
+      {
+        "browser": "./dist/cjs/index.js",
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js",
+        "types": "./dist/types/index.d.ts"
+      },
+      "./dist/cjs/index.js"
+    ],
+    "./package.json": "./package.json"
   },
   "files": [
     "./dist"
@@ -51,14 +57,11 @@
     "plugins": [
       "@semantic-release/github",
       [
-        "@semantic-release/npm",
-        {
-          "tarballDir": "./dist"
-        }
+        "@semantic-release/npm"
       ]
     ]
   },
-  "types": "./dist/index.d.ts",
+  "types": "./dist/types/index.d.ts",
   "jest": {
     "preset": "ts-jest",
     "reporters": [
