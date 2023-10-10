@@ -54,7 +54,6 @@
       ]
     ]
   },
-  "types": "./dist/esm/index.d.ts",
   "jest": {
     "preset": "ts-jest",
     "reporters": [
