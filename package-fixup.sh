@@ -1,11 +1,13 @@
 #!/usr/bin/env sh
 cat >./dist/cjs/package.json <<!EOF
 {
-  "type": "commonjs"
+  "type": "commonjs",
+  "types": "./index.d.ts"
 }
 !EOF
 cat >./dist/esm/package.json <<!EOF
 {
-  "type": "module"
+  "type": "module",
+  "types": "./index.d.ts"
 }
 !EOF
