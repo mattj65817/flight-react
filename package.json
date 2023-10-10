@@ -20,10 +20,11 @@
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "repository": {
+    "type": "git",
     "url": "git+https://github.com/mattj65817/flight-react.git"
   },
   "scripts": {
-    "build": "tsc -p ./tsconfig.json && tsc -p ./tsconfig-cjs.json && tsc -p ./tsconfig-types.json && ./package-fixup.sh",
+    "build": "tsc -p ./tsconfig.json && tsc -p ./tsconfig-cjs.json && tsc -p ./tsconfig-types.json",
     "clean": "rm -rf ./build ./dist",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint ./src",
