@@ -7,6 +7,9 @@ on:
 permissions:
   contents: read
 
+env:
+  GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   release:
     name: Release
@@ -25,13 +28,8 @@ jobs:
         with:
           node-version: "lts/*"
       - run: npm install
-        env:
-          GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm audit signatures
       - run: npx semantic-release
         env:
-          GITHUB_PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
