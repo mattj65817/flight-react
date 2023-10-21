@@ -1,5 +1,14 @@
-import {FlightDataProvider} from "./FlightDataProvider";
+import type {AircraftPosition, FlightPosition, GroundPosition} from "./flight-types";
+import {isFlightPosition, isGroundPosition} from "./flight-types";
+import {AircraftPositionProvider, useAircraftPosition} from "./AircraftPositionProvider";
 
+/* Package exports. */
 export {
-    FlightDataProvider
+    AircraftPosition,
+    AircraftPositionProvider,
+    FlightPosition,
+    GroundPosition,
+    isFlightPosition,
+    isGroundPosition,
+    useAircraftPosition
 };
