@@ -7,6 +7,10 @@ import {DateTime} from "luxon";
 
 describe("OpenSkyClient", () => {
     describe("getAircraftPositions()", () => {
+        test("test", () => {
+            const check = DateTime.fromISO("2023-10-21T16:30:00Z", {setZone: true});
+            console.dir(DateTime.now().diff(check).toMillis());
+        });
         test("Empty Mode-S code array", async () => {
             const instance = OpenSkyClient.create();
             expect(await instance.getPositions([])).toStrictEqual({});

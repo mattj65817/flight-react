@@ -2,7 +2,7 @@ import * as React from "react";
 import _ from "lodash";
 import {createContext, PropsWithChildren, useContext, useEffect, useMemo, useState} from "react";
 import Axios, {AxiosBasicCredentials} from "axios";
-import {AircraftPosition, AircraftPositionService} from "./flight-types";
+import {AircraftPosition} from "./flight-types";
 import {OpenSkyClient} from "./OpenSkyClient";
 import {immerable, produce} from "immer";
 import {DateTime} from "luxon";
@@ -34,28 +34,40 @@ interface OpenSkyConfig {
 
 export function AircraftPositionProvider(props: PropsWithChildren<AircraftPositionProviderProps>) {
     const {children, config, modeSCodes} = props;
+    const service = useMemo(() => {
+        const {auth} = config;
+        return OpenSkyClient.create(config => Axios.create(_.assign({
+            ...(null == auth ? {} : {auth})
+        }, config)));
+    }, [JSON.stringify(config)]);
     const initialState = useMemo(() => new AircraftPositionProviderState(modeSCodes.sort()), [modeSCodes.sort().join(":")]);
     const [state, updateState] = useState(initialState);
-    const service = useMemo<AircraftPositionService>(() => {
-        const {auth} = config;
-        if (null == auth) {
-            return OpenSkyClient.create();
-        }
-        return OpenSkyClient.create(config => Axios.create(_.assign({auth}, config)));
-    }, [JSON.stringify(config)]);
 
+    /* Trigger position updates upon reaching next update time. */
     useEffect(() => {
-        const nextUpdate = state.lastUpdate.plus({minutes: 5});
-        const delay = Math.max(0, nextUpdate.diff(DateTime.now()).toMillis());
-        const timeout = setTimeout(() => Promise.resolve().then(async () => {
-            const positions = await service.getPositions(state.modeSCodes);
-            updateState(previous => produce(previous, draft => {
-                draft.positions = positions;
-            }));
-        }), delay);
-        return () => clearTimeout(timeout);
-    }, [state.lastUpdate, state.modeSCodes, service, updateState]);
 
+        /* Callback to invoke the position service and update state. */
+        const updatePositions = () => {
+            service.getPositions(state.modeSCodes)
+                .then(positions => {
+                    updateState(previous => produce(previous, draft => {
+                        draft.nextUpdate = DateTime.now().plus({minute: 1});
+                        draft.positions = positions;
+                    }));
+                });
+        }
+
+        /* Calculate delay until next update; if <= 0, invoke now, else invoke after timeout. */
+        const delay = DateTime.now().diff(state.nextUpdate).toMillis();
+        if (delay <= 0) {
+            updatePositions();
+        } else {
+            const id = setTimeout(updatePositions, delay);
+            return () => clearTimeout(id);
+        }
+    }, [state.nextUpdate, state.modeSCodes, service]);
+
+    /* Component body. */
     return (
         <AircraftPositionContext.Provider value={state.positions}>
             {children}
@@ -74,11 +86,11 @@ export function useAircraftPosition() {
 class AircraftPositionProviderState {
     [immerable] = true;
 
-    lastUpdate: DateTime;
+    nextUpdate: DateTime;
     positions: Record<Lowercase<string>, AircraftPosition>;
 
     constructor(readonly modeSCodes: Lowercase<string>[]) {
-        this.lastUpdate = DateTime.fromSeconds(0, {zone: "UTC"});
+        this.nextUpdate = DateTime.fromSeconds(0, {zone: "UTC"});
         this.positions = {};
     }
 }
