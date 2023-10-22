@@ -61,7 +61,7 @@ export function AircraftPositionProvider(props: PropsWithChildren<AircraftPositi
         }
 
         /* Calculate delay until next update; if <= 0, invoke now, else invoke after timeout. */
-        const delay = DateTime.now().diff(state.nextUpdate).toMillis();
+        const delay = state.nextUpdate.diff(DateTime.now()).toMillis();
         console.log("Delay", delay);
         if (delay <= 0) {
             updatePositions();
@@ -79,7 +79,7 @@ export function AircraftPositionProvider(props: PropsWithChildren<AircraftPositi
     );
 }
 
-export function useAircraftPosition() {
+export function useAircraftPositions() {
     const context = useContext(AircraftPositionContext);
     if (null == context) {
         throw Error("Context is empty.");
