@@ -50,6 +50,7 @@ export function AircraftPositionProvider(props: PropsWithChildren<AircraftPositi
 
         /* Callback to invoke the position service and update state. */
         const updatePositions = () => {
+            console.log("updatePositions()")
             service.getPositions(state.modeSCodes)
                 .then(positions => {
                     updateState(previous => produce(previous, draft => {
@@ -61,6 +62,7 @@ export function AircraftPositionProvider(props: PropsWithChildren<AircraftPositi
 
         /* Calculate delay until next update; if <= 0, invoke now, else invoke after timeout. */
         const delay = DateTime.now().diff(state.nextUpdate).toMillis();
+        console.log("Delay", delay);
         if (delay <= 0) {
             updatePositions();
         } else {
