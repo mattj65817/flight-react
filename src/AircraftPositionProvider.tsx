@@ -1,13 +1,18 @@
 "use client"
 
 import * as React from "react";
+import {useCallback, useEffect, useMemo, useReducer} from "react";
+import Axios from "axios";
+import {freeze} from "immer";
 import _ from "lodash";
-import {PropsWithChildren, useCallback, useEffect, useMemo, useReducer} from "react";
-import Axios, {AxiosBasicCredentials} from "axios";
-import {OpenSkyClient} from "./OpenSkyClient";
 import {DateTime} from "luxon";
-import {AircraftPositionState} from "./AircraftPositionState";
 import {AircraftPositionContext} from "./AircraftPositionContext";
+import {AircraftPositionState} from "./AircraftPositionState";
+import {OpenSkyClient} from "./OpenSkyClient";
+
+import type {AxiosBasicCredentials} from "axios";
+import type {DurationLike} from "luxon";
+import type {PropsWithChildren} from "react";
 
 /**
  * {@link AircraftPositionProviderProps} holds properties for a {@link AircraftPositionProvider} component.
@@ -60,16 +65,18 @@ export function AircraftPositionProvider(props: PropsWithChildren<AircraftPositi
     }, [dispatch, service, ...state.modeSCodes]);
 
     /* Trigger (or trigger deferred) position updates upon reaching next update time. */
+    const tracking = Object.keys(state.positions).length > 0;
     useEffect(() => {
-        const delay = state.updated.plus({minute: 1}).diff(DateTime.now()).toMillis();
+        const interval = tracking ? TRACKING_INTERVAL : NOT_TRACKING_INTERVAL;
+        const delay = Math.max(0, state.updated.plus(interval).diff(DateTime.now()).toMillis());
         console.log("Delay", delay);
-        if (delay <= 0) {
+        if (0 === delay) {
             updatePositions();
         } else {
             const id = setTimeout(updatePositions, delay);
             return () => clearTimeout(id);
         }
-    }, [updatePositions, state.updated.toMillis(), ...state.modeSCodes]);
+    }, [tracking, updatePositions, state.updated.toMillis(), ...state.modeSCodes]);
 
     /* Component body. */
     return (
@@ -78,3 +85,13 @@ export function AircraftPositionProvider(props: PropsWithChildren<AircraftPositi
         </AircraftPositionContext.Provider>
     );
 }
+
+/**
+ * Position update interval when no aircraft are being tracked (haven't received a position for any aircraft.)
+ */
+const NOT_TRACKING_INTERVAL = freeze<DurationLike>({minute: 5});
+
+/**
+ * Position update interval when at least one aircraft is being tracked (have received a position for any aircraft.)
+ */
+const TRACKING_INTERVAL = freeze<DurationLike>({minute: 1});
