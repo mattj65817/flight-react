@@ -5,6 +5,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
+    "lib": ["es2022"],
     "moduleResolution": "node",
     "noImplicitAny": true,
     "preserveConstEnums": true,
