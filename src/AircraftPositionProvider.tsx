@@ -69,7 +69,7 @@ export function AircraftPositionProvider(props: PropsWithChildren<AircraftPositi
             const id = setTimeout(updatePositions, delay);
             return () => clearTimeout(id);
         }
-    }, [updatePositions, state.updated.toMillis(), ...state.modeSCodes]);
+    }, [state.updated.toMillis(), ...state.modeSCodes]);
 
     /* Component body. */
     return (
