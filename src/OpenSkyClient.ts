@@ -47,7 +47,7 @@ export class OpenSkyClient implements AircraftPositionService {
             headers: new AxiosHeaders().setAccept("application/json"),
             paramsSerializer: params => qs.stringify(params, {arrayFormat: "repeat"}),
             responseType: "json",
-            timeout: 5_000,
+            timeout: 10_000,
             validateStatus: validateIn(200, 429)
         });
         return freeze(new OpenSkyClient(axios, OpenSkyResponseParser.create()));
