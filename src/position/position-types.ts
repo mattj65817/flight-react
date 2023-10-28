@@ -5,7 +5,7 @@ import {DateTime} from "luxon";
  *
  * @param value the value to check.
  */
-export function isAircraftPosition(value: any): value is AircraftPosition {
+export function isAircraftPosition(value: any): value is Position {
     return "object" === typeof value
         && "coordinates" in value
         && "method" in value
@@ -78,14 +78,14 @@ export function isGroundPosition(value: any): value is GroundPosition {
 /**
  * Position of an aircraft, whether it is in on the ground or in flight.
  */
-export type AircraftPosition =
+export type Position =
     | FlightPosition
     | GroundPosition;
 
 /**
  * Public interface to an object which interfaces with an aircraft position service provider.
  */
-export interface AircraftPositionService {
+export interface PositionService {
 
     /**
      * Get the positions of zero or more aircraft.
@@ -93,5 +93,5 @@ export interface AircraftPositionService {
      * @param modeSCodes the Mode S codes (lowercase hex) of the aircraft.
      * @return {@link Record} of aircraft positions keyed on Mode S code.
      */
-    getPositions(modeSCodes: Lowercase<string>[]): Promise<Record<Lowercase<string>, AircraftPosition>>;
+    getPositions(modeSCodes: Lowercase<string>[]): Promise<Record<Lowercase<string>, Position>>;
 }

@@ -1,17 +1,15 @@
-import type {AircraftPosition, FlightPosition, GroundPosition} from "./flight-types";
-import {isFlightPosition, isGroundPosition} from "./flight-types";
-import {useAircraftPosition} from "./AircraftPositionContext";
-import {AircraftPositionProvider} from "./AircraftPositionProvider";
-import {FlightDisplay} from "./FlightDisplay";
+import type {Position, FlightPosition, GroundPosition} from "./position/position-types";
+import {isFlightPosition, isGroundPosition} from "./position/position-types";
+import {usePosition} from "./position/PositionContext";
+import {PositionProvider} from "./position/PositionProvider";
 
 /* Package exports. */
 export {
-    AircraftPosition,
-    AircraftPositionProvider,
-    FlightDisplay,
+    Position,
+    PositionProvider,
     FlightPosition,
     GroundPosition,
     isFlightPosition,
     isGroundPosition,
-    useAircraftPosition
+    usePosition
 };

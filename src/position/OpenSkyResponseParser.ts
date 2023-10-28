@@ -2,7 +2,8 @@ import _ from "lodash";
 import {DateTime} from "luxon";
 import {freeze} from "immer";
 import {scale} from "@mattj65817/util-js";
-import {AircraftPosition} from "./index";
+
+import type {Position} from "./position-types";
 
 /**
  * {@link OpenSkyResponseParser} parses OpenSky API responses into generic flight tracking data types,
@@ -57,7 +58,7 @@ export class OpenSkyResponseParser {
                     }
                 }
             }
-        }, {} as { [k in Lowercase<string>]: AircraftPosition }), true);
+        }, {} as { [k in Lowercase<string>]: Position }), true);
     }
 
     static create() {

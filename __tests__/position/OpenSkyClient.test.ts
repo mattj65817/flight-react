@@ -1,8 +1,8 @@
 import {readJsonResource} from "@mattj65817/test-js";
-import {OpenSkyClient} from "../src/OpenSkyClient";
+import {OpenSkyClient} from "../../src/position/OpenSkyClient";
 import Axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import {StatesAllResponse} from "../src/OpenSkyResponseParser";
+import {StatesAllResponse} from "../../src/position/OpenSkyResponseParser";
 import {DateTime} from "luxon";
 
 describe("OpenSkyClient", () => {

@@ -1,15 +1,17 @@
-import Axios, {AxiosHeaders, AxiosInstance, CreateAxiosDefaults} from "axios";
-import {validateIn} from "@mattj65817/util-js";
-import qs from "qs";
-import _ from "lodash";
-import {OpenSkyResponseParser} from "./OpenSkyResponseParser";
+import Axios, {AxiosHeaders} from "axios";
 import {freeze} from "immer";
-import type {AircraftPosition, AircraftPositionService} from "./flight-types";
+import _ from "lodash";
+import qs from "qs";
+import {validateIn} from "@mattj65817/util-js";
+import {OpenSkyResponseParser} from "./OpenSkyResponseParser";
+
+import type {AxiosInstance, CreateAxiosDefaults} from "axios";
+import type {Position, PositionService} from "./position-types";
 
 /**
  * {@link OpenSkyClient} encapsulates requests to OpenSky API web services.
  */
-export class OpenSkyClient implements AircraftPositionService {
+export class OpenSkyClient implements PositionService {
     constructor(private readonly request: AxiosInstance["request"], private readonly parser: OpenSkyResponseParser) {
     }
 
@@ -19,7 +21,7 @@ export class OpenSkyClient implements AircraftPositionService {
      * @param modeSCodes the Mode S codes (lowercase hex) of the aircraft.
      * @return {@link Record} of aircraft positions keyed on Mode S code.
      */
-    async getPositions(modeSCodes: Lowercase<string>[]): Promise<Record<Lowercase<string>, AircraftPosition>> {
+    async getPositions(modeSCodes: Lowercase<string>[]): Promise<Record<Lowercase<string>, Position>> {
         if (0 === modeSCodes.length) {
             return Promise.resolve({});
         }

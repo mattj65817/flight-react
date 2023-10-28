@@ -1,6 +1,6 @@
-import {isFlightPosition, isGroundPosition} from "../src";
+import {isFlightPosition, isGroundPosition} from "../../src";
 import {DateTime} from "luxon";
-import {isAircraftPosition} from "../src/flight-types";
+import {isAircraftPosition} from "../../src/position/position-types";
 
 describe("flight-types.ts", () => {
     describe("Type guards", () => {

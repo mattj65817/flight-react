@@ -1,18 +1,19 @@
-import _ from "lodash";
 import {freeze, immerable, produce} from "immer";
+import _ from "lodash";
 import {DateTime} from "luxon";
-import {AircraftPosition} from "./flight-types";
+
+import type {Position} from "./position-types";
 
 /**
- * {@link AircraftPositionState} holds backing state for an {@link AircraftPositionProvider} component.
+ * {@link PositionState} holds backing state for an {@link PositionProvider} component.
  */
-export class AircraftPositionState {
+export class PositionState {
     [immerable] = true;
 
     /**
      * Aircraft positions, if known.
      */
-    positions: Record<Lowercase<string>, AircraftPosition> = {};
+    positions: Record<Lowercase<string>, Position> = {};
 
     /**
      * Time at which positions were last updated.
@@ -24,24 +25,28 @@ export class AircraftPositionState {
     }
 
     /**
-     * Create an initial {@link AircraftPositionState}.
+     * Create an initial {@link PositionState}.
      *
      * @param modeSCodes the Mode S codes of aircraft whose positions are to be tracked.
      */
     static initial(modeSCodes: Lowercase<string>[]) {
-        return freeze(new AircraftPositionState(_.uniq(modeSCodes).sort()));
+        return freeze(new PositionState(_.uniq(modeSCodes).sort()));
     }
 
     /**
-     * Reducer for {@link AircraftPositionAction} on an {@link AircraftPositionState}.
+     * Reducer for {@link PositionAction} on an {@link PositionState}.
      *
      * @param previous the previous state.
      * @param action the action.
      */
-    static reduce(previous: AircraftPositionState, action: AircraftPositionAction): AircraftPositionState {
+    static reduce(previous: PositionState, action: PositionAction): PositionState {
         const {kind} = action;
         switch (kind) {
-            case "update positions":
+            case "position update failed":
+                return produce(previous, draft => {
+                    draft.updated = action.payload.failed;
+                });
+            case "position updated":
                 return produce(previous, draft => {
                     const {payload: {updated, positions}} = action;
                     draft.updated = updated;
@@ -69,18 +74,30 @@ export class AircraftPositionState {
 }
 
 /**
- * Update aircraft positions.
+ * Aircraft position(s) updated successfully.
  */
-interface UpdatePositions {
-    kind: "update positions";
+interface PositionUpdated {
+    kind: "position updated";
     payload: {
         updated: DateTime;
-        positions: Record<Lowercase<string>, AircraftPosition>;
+        positions: Record<Lowercase<string>, Position>;
     };
 }
 
 /**
- * Actions supported by {@link AircraftPositionState.reduce}.
+ * Attempt to update aircraft position(s) failed with an error.
  */
-type AircraftPositionAction =
-    | UpdatePositions;
+interface PositionUpdateFailed {
+    kind: "position update failed";
+    payload: {
+        failed: DateTime;
+        error: any;
+    }
+}
+
+/**
+ * Actions supported by {@link PositionState.reduce}.
+ */
+type PositionAction =
+    | PositionUpdateFailed
+    | PositionUpdated;

@@ -1,8 +1,8 @@
 import {readJsonResource} from "@mattj65817/test-js";
-import {OpenSkyResponseParser} from "../src/OpenSkyResponseParser";
+import {OpenSkyResponseParser} from "../../src/position/OpenSkyResponseParser";
 import {DateTime} from "luxon";
 
-import type {StatesAllResponse} from "../src/OpenSkyResponseParser";
+import type {StatesAllResponse} from "../../src/position/OpenSkyResponseParser";
 
 describe("OpenSkyResponseParser", () => {
     const parser = OpenSkyResponseParser.create();

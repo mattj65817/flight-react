@@ -1,4 +1,4 @@
-import {AircraftPositionState} from "../src/AircraftPositionState";
+import {PositionState} from "../../src/position/PositionState";
 import {DateTime, FixedOffsetZone} from "luxon";
 import _ from "lodash";
 import {freeze} from "immer";
@@ -15,17 +15,17 @@ describe("AircraftPositionState", () => {
         "aa3681" // N75706
     ]);
     test("initial()", () => {
-        const instance = AircraftPositionState.initial([...moreyModeSCodes].reverse());
+        const instance = PositionState.initial([...moreyModeSCodes].reverse());
         expect(instance.modeSCodes).toStrictEqual(moreyModeSCodes);
         expect(instance.updated.toSeconds()).toBe(0);
         expect(instance.updated.zone).toStrictEqual(FixedOffsetZone.instance(0));
     });
     describe("reduce()", () => {
-        const base = AircraftPositionState.initial(moreyModeSCodes);
+        const base = PositionState.initial(moreyModeSCodes);
         const updated = DateTime.now().setZone("UTC");
         test("Aircraft position added", () => {
-            const after = AircraftPositionState.reduce(base, {
-                kind: "update positions",
+            const after = PositionState.reduce(base, {
+                kind: "position updated",
                 payload: {
                     positions: {
                         "a3daa1": {
@@ -58,8 +58,8 @@ describe("AircraftPositionState", () => {
             });
         });
         test("Aircraft position removed", () => {
-            const before = AircraftPositionState.reduce(base, {
-                kind: "update positions",
+            const before = PositionState.reduce(base, {
+                kind: "position updated",
                 payload: {
                     positions: {
                         "a3daa1": {
@@ -88,8 +88,8 @@ describe("AircraftPositionState", () => {
                     updated
                 }
             });
-            const after = AircraftPositionState.reduce(before, {
-                kind: "update positions",
+            const after = PositionState.reduce(before, {
+                kind: "position updated",
                 payload: {
                     positions: {
                         "aa3681": {
@@ -122,8 +122,8 @@ describe("AircraftPositionState", () => {
             });
         });
         test("Aircraft position updated", () => {
-            const before = AircraftPositionState.reduce(base, {
-                kind: "update positions",
+            const before = PositionState.reduce(base, {
+                kind: "position updated",
                 payload: {
                     positions: {
                         "aa3681": {
@@ -141,8 +141,8 @@ describe("AircraftPositionState", () => {
                     updated
                 }
             });
-            const after = AircraftPositionState.reduce(before, {
-                kind: "update positions",
+            const after = PositionState.reduce(before, {
+                kind: "position updated",
                 payload: {
                     positions: {
                         "aa3681": {
