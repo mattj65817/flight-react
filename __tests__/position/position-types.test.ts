@@ -2,7 +2,7 @@ import {isFlightPosition, isGroundPosition} from "../../src";
 import {DateTime} from "luxon";
 import {isAircraftPosition} from "../../src/position/position-types";
 
-describe("flight-types.ts", () => {
+describe("position-types.ts", () => {
     describe("Type guards", () => {
         test("isAircraftPosition()", () => {
             expect(isAircraftPosition({

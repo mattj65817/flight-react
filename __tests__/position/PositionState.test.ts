@@ -3,7 +3,7 @@ import {DateTime, FixedOffsetZone} from "luxon";
 import _ from "lodash";
 import {freeze} from "immer";
 
-describe("AircraftPositionState", () => {
+describe("PositionState", () => {
     const moreyModeSCodes: Lowercase<string>[] = freeze([
         "a3daa1", // N3477E
         "a5414a", // N438ER
