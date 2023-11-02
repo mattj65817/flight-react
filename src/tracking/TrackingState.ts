@@ -12,7 +12,7 @@ class TrackingState {
     error?: unknown;
     modeSCodes: ModeSCode[];
     nonTrackingInterval: DurationLike;
-    positionsByModeSCode: Record<Uppercase<string>, TrackingPosition> = {};
+    positionsByModeSCode: Record<ModeSCode, TrackingPosition> = {};
     trackingInterval: DurationLike;
 
     private constructor(config: TrackingStateConfig) {
@@ -52,10 +52,10 @@ class TrackingState {
                     /* Add or update positions which are present. */
                     Object.entries(positionsByModeSCode)
                         .forEach(([modeSCode, position]) => {
-                            const target = draft.positionsByModeSCode[modeSCode as Uppercase<string>];
-                            if (null != target) {
-
-                            }
+                            // const target = draft.positionsByModeSCode[modeSCode as Uppercase<string>];
+                            // if (null != target) {
+                            //
+                            // }
                             if (Object.hasOwn(draft.positionsByModeSCode, modeSCode)) {
                                 Object.assign(draft.positionsByModeSCode)
                             }

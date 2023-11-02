@@ -91,7 +91,7 @@ interface PositionUpdateFailed {
     kind: "position update failed";
     payload: {
         failed: DateTime;
-        error: any;
+        error: unknown;
     }
 }
 

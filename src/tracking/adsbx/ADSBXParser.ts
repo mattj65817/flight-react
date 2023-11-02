@@ -7,7 +7,6 @@ import {
     isADSBXPositionResponse,
     isADSBXTrack
 } from "./ADSBX-types";
-import {DateTime} from "luxon";
 
 export class ADSBXParser {
     [immerable] = true;
@@ -19,7 +18,7 @@ export class ADSBXParser {
         if (!isADSBXPositionResponse(source)) {
             throw Error("Unexpected response.");
         }
-        const timestamp = DateTime.fromMillis(source.now, {zone: "UTC"});
+        // const timestamp = DateTime.fromMillis(source.now, {zone: "UTC"});
         return source.ac.filter(ac => isADSBXAltitude(ac))
             .map(ac => {
                 if (!isADSBXAltitude(ac)) {

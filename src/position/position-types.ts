@@ -5,16 +5,18 @@ import {DateTime} from "luxon";
  *
  * @param value the value to check.
  */
-export function isAircraftPosition(value: any): value is Position {
-    return "object" === typeof value
+export function isAircraftPosition(value: unknown): value is Position {
+    return null != value
+        && "object" === typeof value
         && "coordinates" in value
         && "method" in value
         && "timestamp" in value
         && "track" in value
+        && Array.isArray(value.coordinates)
         && 2 === value.coordinates.length
         && "number" === typeof value.coordinates[0]
         && "number" === typeof value.coordinates[1]
-        && -1 !== ["observed", "projected"].indexOf(value.method)
+        && -1 !== ["observed", "projected"].indexOf(value.method as string)
         && value.timestamp instanceof DateTime
         && "number" === typeof value.track;
 }
@@ -62,7 +64,7 @@ export interface GroundPosition {
  *
  * @param value the value to check.
  */
-export function isFlightPosition(value: any): value is FlightPosition {
+export function isFlightPosition(value: unknown): value is FlightPosition {
     return isAircraftPosition(value) && "altitude" in value;
 }
 
@@ -71,7 +73,7 @@ export function isFlightPosition(value: any): value is FlightPosition {
  *
  * @param value the value to check.
  */
-export function isGroundPosition(value: any): value is GroundPosition {
+export function isGroundPosition(value: unknown): value is GroundPosition {
     return isAircraftPosition(value) && !isFlightPosition(value);
 }
 
