@@ -7,7 +7,6 @@ import {TrackingManager} from "../TrackingManager";
 import {ADSBXConfig} from "./ADSBX-types";
 import {ADSBXClient} from "./ADSBXClient";
 import {ADSBXPositionService} from "./ADSBXPositionService";
-import {validateIn} from "@mattj65817/util-js";
 
 /**
  * Configuration for an ADSB-X position provider.
