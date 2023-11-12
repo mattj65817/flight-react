@@ -24,10 +24,11 @@ export class ADSBXClient {
     /**
      * Get latest known positions for zero or more aircraft.
      *
-     * @param modeSCodes the aircraft Mode S hex codes.
+     * @param ids the aircraft Mode S hex codes.
      */
-    async getPositionsByModeSCodes(modeSCodes: ModeSCode[]) {
-        if (0 === modeSCodes.length) {
+    async getPositionsByModeSCodes(ids: ModeSCode[]) {
+        console.log(`getPositionsByModeSCodes([${ids.join("], [")}])`, ids);
+        if (0 === ids.length) {
             const now = Date.now();
             return Promise.resolve(freeze<ADSBXPositionResponse>(_.assign({}, ADSBXClient.EMPTY_POSITIONS, {
                 ctime: now,
@@ -37,7 +38,7 @@ export class ADSBXClient {
         const response = await this.request<ADSBXErrorResponse | ADSBXPositionResponse>({
             method: "GET",
             headers: new AxiosHeaders().setAccept("application/json"),
-            url: `./hex/${_.uniq(modeSCodes).sort().join(',')}`,
+            url: `./hex/${_.uniq(ids).sort().join(',')}`,
             responseType: "json",
             validateStatus: validateIn(200, 429)
         });
