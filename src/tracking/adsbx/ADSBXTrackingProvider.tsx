@@ -22,7 +22,7 @@ export function ADSBXTrackingProvider({children, ...rest}: PropsWithChildren<ADS
         if (null != auth) {
             headers = headers.set("api-auth", auth);
         }
-        const axios = axiosFactory({
+        const axios = Axios.create({
             baseURL: baseURL.href,
             responseType: "json",
             headers
