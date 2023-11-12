@@ -15,20 +15,19 @@ export interface ADSBXTrackingProviderProps extends ADSBXConfig {
     axiosFactory: (config?: CreateAxiosDefaults) => AxiosInstance;
 }
 
-export function ADSBXTrackingProvider({children, ...rest}: PropsWithChildren<ADSBXTrackingProviderProps>) {
-    const {axiosFactory, auth, baseURL} = _.defaults({}, rest, DEFAULT_PROPS);
+export function ADSBXTrackingProvider({children, ...props}: PropsWithChildren<ADSBXTrackingProviderProps>) {
+    const {axiosFactory, auth, baseURL} = _.defaults({}, props, DEFAULT_PROPS);
     const positionService = useMemo(() => {
         let headers = new AxiosHeaders().setAccept("application/json");
         if (null != auth) {
             headers = headers.set("api-auth", auth);
         }
-        const axios = Axios.create({
+        const axios = axiosFactory({
             baseURL: baseURL.href,
             responseType: "json",
             headers
         });
         const client = ADSBXClient.create(axios);
-        console.dir(axios);
         return ADSBXPositionService.create(client);
     }, [axiosFactory, auth, baseURL.href]);
     return (
