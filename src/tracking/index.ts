@@ -1,4 +1,5 @@
 import {isModeSCode} from "./tracking-types";
+import {TrackingProvider, useTrackingState} from "./TrackingProvider";
 
 import type {Kinded, ModeSCode, Positions, Timestamped} from "./tracking-types";
 
@@ -8,5 +9,7 @@ export {
     ModeSCode,
     Positions,
     Timestamped,
-    isModeSCode
+    TrackingProvider,
+    isModeSCode,
+    useTrackingState
 };
