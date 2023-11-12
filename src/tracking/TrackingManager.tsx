@@ -16,6 +16,7 @@ export function TrackingManager({children, service}: PropsWithChildren<TrackingM
     const updatePositions = useCallback(() => {
         Promise.resolve()
             .then(async () => {
+                console.log("GET POSITIONS");
                 const positions = await service.getPositionsByModeSCodes(ids);
                 dispatch({
                     kind: "positions updated",
@@ -40,12 +41,10 @@ export function TrackingManager({children, service}: PropsWithChildren<TrackingM
     const {nextUpdate} = state;
     useEffect(() => {
         const delay = nextUpdate.diff(DateTime.utc()).toMillis();
-        console.log("DELAY: " + delay);
         if (delay <= 0) {
             updatePositions();
         } else {
-            const id = setTimeout(updatePositions, delay);
-            return () => clearTimeout(id);
+            return () => clearTimeout(setTimeout(updatePositions, delay));
         }
     }, [updatePositions, nextUpdate]);
     return (
