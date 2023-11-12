@@ -64,8 +64,8 @@ export class ADSBXClient {
      *
      * @param axios the Axios instance, preconfigured with the API base URL (e.g. `https://opendata.adsb.fi/api/v2/`.)
      */
-    static create(axios: AxiosInstance["request"]) {
-        return freeze(new ADSBXClient(axios));
+    static create(axios: AxiosInstance) {
+        return freeze(new ADSBXClient(axios.request));
     }
 
     /**

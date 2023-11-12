@@ -26,7 +26,7 @@ export function ADSBXTrackingProvider({children, ...rest}: PropsWithChildren<ADS
             baseURL: baseURL.href,
             headers
         });
-        const client = ADSBXClient.create(axios.request);
+        const client = ADSBXClient.create(axios);
         return ADSBXPositionService.create(client);
     }, [axiosFactory, auth, baseURL.href]);
     return (
