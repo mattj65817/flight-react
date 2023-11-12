@@ -1,24 +1,42 @@
 import {freeze, immerable, produce} from "immer";
 import _ from "lodash";
-import {DateTime, DurationLike} from "luxon";
 
-import type {ModeSCode, Position, TrackingAction} from "./tracking-types";
+import type {ModeSCode, Positions, Timestamped} from "./tracking-types";
+import type {DurationLike} from "luxon";
+import {DateTime} from "luxon";
 
-type TrackingStateConfig = Omit<TrackingState, "positionsByModeSCode">;
+/**
+ * Configuration for creating an initial {@link TrackingState}.
+ */
+export type TrackingStateConfig = Omit<TrackingState, "error" | "interval" | "nextUpdate" | "positions" | "tracking" | typeof immerable>;
 
-class TrackingState {
+/**
+ * {@link TrackingState} holds the current state
+ */
+export class TrackingState {
     [immerable] = true;
 
-    error?: unknown;
-    modeSCodes: ModeSCode[];
+    error?: Timestamped<{
+        error: unknown;
+    }>;
+    ids: ModeSCode[];
+    nextUpdate = DateTime.utc();
     nonTrackingInterval: DurationLike;
-    positionsByModeSCode: Record<ModeSCode, TrackingPosition> = {};
+    positions: { [K in ModeSCode]: Timestamped<Positions[ModeSCode]> } = {};
     trackingInterval: DurationLike;
 
     private constructor(config: TrackingStateConfig) {
-        this.modeSCodes = config.modeSCodes;
+        this.ids = _.uniq(config.ids).sort();
         this.nonTrackingInterval = config.nonTrackingInterval;
         this.trackingInterval = config.trackingInterval;
+    }
+
+    get interval() {
+        return this.tracking ? this.trackingInterval : this.nonTrackingInterval;
+    }
+
+    get tracking() {
+        return 0 !== Object.keys(this.positions).length;
     }
 
     /**
@@ -30,11 +48,20 @@ class TrackingState {
         return freeze(new TrackingState(_.cloneDeep(config)));
     }
 
+    /**
+     * Reducer for {@link TrackingAction} against a {@link TrackingState}.
+     *
+     * @param previous the previous state.
+     * @param kind the action kind.
+     * @param payload the action payload.
+     */
     static reduce(previous: TrackingState, {kind, payload}: TrackingAction) {
         switch (kind) {
             case "error occurred":
                 return produce(previous, draft => {
-                    draft.error = payload;
+                    draft.error = _.cloneDeep(payload);
+                    draft.positions = {};
+                    draft.nextUpdate = payload.timestamp.plus(draft.nonTrackingInterval);
                 });
             case "positions updated":
                 return produce(previous, draft => {
@@ -42,33 +69,38 @@ class TrackingState {
 
                     /* Remove positions which are not present in the updated data. */
                     const {positions, timestamp} = payload;
-                    const positionsByModeSCode = _.keyBy(positions, "modeSCode");
-                    Object.keys(draft.positionsByModeSCode)
-                        .filter(modeSCode => !Object.hasOwn(positionsByModeSCode, modeSCode))
-                        .forEach(modeSCode => {
-                            delete draft.positionsByModeSCode[modeSCode as ModeSCode];
-                        });
+                    Object.keys(draft.positions)
+                        .filter(id => !Object.hasOwn(positions, id))
+                        .forEach(id => delete draft.positions[id as ModeSCode]);
 
-                    /* Add or update positions which are present. */
-                    Object.entries(positionsByModeSCode)
-                        .forEach(([modeSCode, position]) => {
-                            // const target = draft.positionsByModeSCode[modeSCode as Uppercase<string>];
-                            // if (null != target) {
-                            //
-                            // }
-                            if (Object.hasOwn(draft.positionsByModeSCode, modeSCode)) {
-                                Object.assign(draft.positionsByModeSCode)
+                    /* Add or update positions which are present in the updated data. */
+                    Object.entries(positions)
+                        .forEach(([idString, position]) => {
+                            const id = idString as ModeSCode;
+                            if (-1 !== draft.ids.indexOf(id)) {
+                                draft.positions[id] = Object.assign(draft.positions[id] || {}, position, {timestamp});
                             }
-                            Object.assign(positionsByModeSCode[modeSCode] || {},
-                                _.merge(_.omit(position, "modeSCode")),
-                                {modeSCode, timestamp});
                         });
+                    draft.nextUpdate = timestamp.plus(draft.interval);
                 });
         }
     }
 }
 
-interface TrackingPosition extends Position {
-    modeSCode: ModeSCode;
-    timestamp: DateTime;
+interface PositionsUpdated {
+    kind: "positions updated";
+    payload: Timestamped<{
+        positions: Positions
+    }>;
 }
+
+interface ErrorOccurred {
+    kind: "error occurred";
+    payload: Timestamped<{
+        error: unknown;
+    }>;
+}
+
+export type TrackingAction =
+    | ErrorOccurred
+    | PositionsUpdated;

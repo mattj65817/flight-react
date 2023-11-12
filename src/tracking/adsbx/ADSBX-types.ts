@@ -8,6 +8,22 @@ export interface ADSBXAltitude {
 }
 
 /**
+ * Configuration for an ADSB-X position service.
+ */
+export interface ADSBXConfig {
+
+    /**
+     * ADSB-X authentication key, if needed by the provider.
+     */
+    auth?: string;
+
+    /**
+     * ADSB-X base URL, such as `https://opendata.adsb.fi/api/v2/`.
+     */
+    baseURL: URL;
+}
+
+/**
  * Geographic coordinates.
  */
 export interface ADSBXCoords {

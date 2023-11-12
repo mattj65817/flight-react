@@ -1,40 +1,53 @@
 import {DateTime} from "luxon";
 
-export type GeoCoords = [
-    latitude: number,
-    longitude: number
-];
-
+/**
+ * Hexadecimal Mode S code.
+ */
 export type ModeSCode = Lowercase<string>;
 
-export type TrackingAction =
-    | ErrorOccurred
-    | PositionsUpdated;
-
-export interface Position {
-    altitude: "ground" | number;
-    coordinates: [
-        latitude: number,
-        longitude: number
-    ];
-    velocity?: {
-        horizontal: number;
-        vertical?: number;
-    }
+/**
+ * Hash of positions keyed on hexadecimal Mode S code.
+ */
+export type Positions = {
+    [K in ModeSCode]: {
+        altitude: "ground" | number;
+        coordinates: [
+            latitude: number,
+            longitude: number
+        ];
+        track?: number;
+        velocity?: {
+            horizontal: number;
+            vertical?: number;
+        }
+    };
 }
 
-interface PositionsUpdated {
-    kind: "positions updated";
-    payload: {
-        positions: (Position & { modeSCode: ModeSCode })[];
-        timestamp: DateTime;
-    }
+/**
+ * Service which provides aircraft positions, typically an ADS-B aggregator.
+ */
+export interface PositionService {
+
+    /**
+     * Get current positions for zero or more aircraft based on Mode C hex code.
+     *
+     * The returned {@link Positions} object may not contain an entry for *every* aircraft present in the Mode S code
+     * list; typically only aircraft that are currently in flight (or in a ground-tracked area) are returned.
+     *
+     * @param ids the Mode C hex codes.
+     */
+    getPositionsByModeSCodes(ids: ModeSCode[]): Promise<Positions>;
 }
 
-interface ErrorOccurred {
-    kind: "error occurred";
-    payload: unknown;
-}
+/**
+ * Generic object with an associated `kind` attribute.
+ */
+export type Kinded<T extends object, K extends string> = T & { kind: K };
+
+/**
+ * Generic object with an associated timestamp.
+ */
+export type Timestamped<T extends object> = T & { timestamp: DateTime };
 
 /**
  * Type guard for {@link ModeSCode}.
