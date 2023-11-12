@@ -26,8 +26,7 @@ export class ADSBXClient {
      *
      * @param ids the aircraft Mode S hex codes.
      */
-    async getPositionsByModeSCodes(ids: ModeSCode[]) {
-        console.log(`getPositionsByModeSCodes([${ids.join("], [")}])`, ids);
+    async getPositions(ids: ModeSCode[]) {
         if (0 === ids.length) {
             const now = Date.now();
             return Promise.resolve(freeze<ADSBXPositionResponse>(_.assign({}, ADSBXClient.EMPTY_POSITIONS, {
@@ -38,10 +37,11 @@ export class ADSBXClient {
         const response = await this.request<ADSBXErrorResponse | ADSBXPositionResponse>({
             method: "GET",
             headers: new AxiosHeaders().setAccept("application/json"),
-            url: `./hex/${_.uniq(ids).sort().join(',')}`,
+            url: `./hex/${ids.join(',')}`,
             responseType: "json",
             validateStatus: validateIn(200, 429)
         });
+        console.dir(response);
         if (429 === response.status) {
             throw Error("Exceeded rate limit");
         }

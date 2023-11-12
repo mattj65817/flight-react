@@ -36,7 +36,7 @@ export interface PositionService {
      *
      * @param ids the Mode C hex codes.
      */
-    getPositionsByModeSCodes(ids: ModeSCode[]): Promise<Positions>;
+    getPositions(ids: ModeSCode[]): Promise<Positions>;
 }
 
 /**

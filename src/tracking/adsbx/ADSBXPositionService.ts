@@ -14,8 +14,8 @@ export class ADSBXPositionService implements PositionService {
     private constructor(private readonly client: ADSBXClient, private readonly parser: ADSBXParser) {
     }
 
-    async getPositionsByModeSCodes(ids: ModeSCode[]) {
-        const response = await this.client.getPositionsByModeSCodes(ids);
+    async getPositions(ids: ModeSCode[]) {
+        const response = await this.client.getPositions(ids);
         return this.parser.parsePositions(response);
     }
 

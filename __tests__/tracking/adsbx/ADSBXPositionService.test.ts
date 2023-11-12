@@ -20,7 +20,7 @@ describe("ADSBXPositionService", () => {
             const response = await readJsonResource<ADSBXPositionResponse>(__dirname, "./ADSBX-positions-response.json");
             const modeSCodes = _.uniq(_.map(response.ac, "hex")).sort();
             axiosMock.onGet(`./hex/${modeSCodes.join(",")}`).reply(200, JSON.stringify(response));
-            const positions = await instance.getPositionsByModeSCodes(modeSCodes);
+            const positions = await instance.getPositions(modeSCodes);
             expect(positions).toStrictEqual({
                 a800d3: {
                     altitude: 1700,
@@ -55,7 +55,7 @@ describe("ADSBXPositionService", () => {
             const instance = ADSBXPositionService.create(client, ADSBXParser.INSTANCE);
             axiosMock.onGet("./hex/abc123").reply(429);
             try {
-                await instance.getPositionsByModeSCodes(["abc123"]);
+                await instance.getPositions(["abc123"]);
                 expect(true).toBe(false);
             } catch (ex) {
                 if (isError(ex)) {

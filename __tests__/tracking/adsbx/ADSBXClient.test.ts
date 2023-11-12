@@ -17,7 +17,7 @@ describe("ADSBXClient", () => {
             const response = await readJsonResource<ADSBXPositionResponse>(__dirname, "./ADSBX-positions-response.json");
             const modeSCodes = _.uniq(_.map(response.ac, "hex")).sort();
             axiosMock.onGet(`./hex/${modeSCodes.join(",")}`).reply(200, JSON.stringify(response));
-            const positions = await instance.getPositionsByModeSCodes(modeSCodes);
+            const positions = await instance.getPositions(modeSCodes);
             expect(positions).toStrictEqual(response);
         });
         test("Throws on rate limit failure", async () => {
@@ -28,7 +28,7 @@ describe("ADSBXClient", () => {
             const instance = ADSBXClient.create(axios);
             axiosMock.onGet("./hex/abc123").reply(429);
             try {
-                await instance.getPositionsByModeSCodes(["abc123"]);
+                await instance.getPositions(["abc123"]);
                 expect(true).toBe(false);
             } catch (ex) {
                 if (isError(ex)) {
