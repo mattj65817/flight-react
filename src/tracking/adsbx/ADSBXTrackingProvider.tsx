@@ -38,6 +38,6 @@ export function ADSBXTrackingProvider({children, ...props}: PropsWithChildren<AD
 }
 
 const DEFAULT_PROPS = freeze<Partial<ADSBXTrackingProviderProps>>({
-    axiosFactory: Axios.create,
+    axiosFactory: config => Axios.create(config),
     baseURL: new URL("https://opendata.adsb.fi/api/v2/")
 });
