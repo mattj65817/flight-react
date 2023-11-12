@@ -12,7 +12,10 @@ import {TrackingAction, TrackingState} from "./TrackingState";
 import {ADSBXTrackingProvider, ADSBXTrackingProviderProps} from "./adsbx/ADSBXTrackingProvider";
 import {Kinded, ModeSCode} from "./tracking-types";
 
-interface TrackingProviderProps {
+/**
+ * Properties for a {@link TrackingProvider} component.
+ */
+export interface TrackingProviderProps {
     config: Kinded<ADSBXTrackingProviderProps, "adsbx">;
     ids: ModeSCode[];
     nonTrackingInterval: DurationLike;
