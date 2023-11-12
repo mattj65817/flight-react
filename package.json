@@ -37,7 +37,7 @@
   "license": "ISC",
   "dependencies": {
     "@mattj65817/util-js": "^1.1.0",
-    "axios": "^1.5.1",
+    "axios": "^1.6.1",
     "immer": "^10.0.3",
     "lodash": "^4.17.21",
     "luxon": "^3.4.3",

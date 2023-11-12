@@ -1,6 +1,5 @@
 import {freeze, immerable} from "immer";
 import _ from "lodash";
-import {validateIn} from "@mattj65817/util-js";
 import {isADSBXErrorResponse} from "./ADSBX-types";
 
 import type {AxiosInstance} from "axios";
@@ -36,9 +35,7 @@ export class ADSBXClient {
         try {
             const response = await this.axios.request<ADSBXErrorResponse | ADSBXPositionResponse>({
                 method: "GET",
-                url: `./hex/${ids.join(',')}`,
-                responseType: "json",
-                validateStatus: validateIn(200, 429)
+                url: `./hex/${ids.join(',')}`
             });
             console.log("RESPONSE");
             console.dir(response);

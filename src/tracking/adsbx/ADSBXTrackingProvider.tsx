@@ -7,6 +7,7 @@ import {TrackingManager} from "../TrackingManager";
 import {ADSBXConfig} from "./ADSBX-types";
 import {ADSBXClient} from "./ADSBXClient";
 import {ADSBXPositionService} from "./ADSBXPositionService";
+import {validateIn} from "@mattj65817/util-js";
 
 /**
  * Configuration for an ADSB-X position provider.
@@ -24,6 +25,8 @@ export function ADSBXTrackingProvider({children, ...rest}: PropsWithChildren<ADS
         }
         const axios = axiosFactory({
             baseURL: baseURL.href,
+            responseType: "json",
+            validateStatus: validateIn(200, 429),
             headers
         });
         const client = ADSBXClient.create(axios);
