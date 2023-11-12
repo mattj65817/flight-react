@@ -12,7 +12,7 @@ import {ADSBXPositionService} from "./ADSBXPositionService";
  * Configuration for an ADSB-X position provider.
  */
 export interface ADSBXTrackingProviderProps extends ADSBXConfig {
-    axiosFactory: (config: CreateAxiosDefaults) => AxiosInstance;
+    axiosFactory: (config?: CreateAxiosDefaults) => AxiosInstance;
 }
 
 export function ADSBXTrackingProvider({children, ...rest}: PropsWithChildren<ADSBXTrackingProviderProps>) {

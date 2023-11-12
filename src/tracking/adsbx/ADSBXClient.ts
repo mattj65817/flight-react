@@ -37,7 +37,6 @@ export class ADSBXClient {
         try {
             const response = await this.axios.request<ADSBXErrorResponse | ADSBXPositionResponse>({
                 method: "GET",
-                headers: new AxiosHeaders().setAccept("application/json"),
                 url: `./hex/${ids.join(',')}`,
                 responseType: "json",
                 validateStatus: validateIn(200, 429)
