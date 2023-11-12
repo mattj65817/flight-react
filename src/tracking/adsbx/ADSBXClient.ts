@@ -1,4 +1,3 @@
-import {AxiosHeaders} from "axios";
 import {freeze, immerable} from "immer";
 import _ from "lodash";
 import {validateIn} from "@mattj65817/util-js";
