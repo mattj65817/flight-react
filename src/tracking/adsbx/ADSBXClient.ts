@@ -34,23 +34,28 @@ export class ADSBXClient {
                     now
                 }));
         }
-        const response = await this.axios.request<ADSBXErrorResponse | ADSBXPositionResponse>({
-            method: "GET",
-            headers: new AxiosHeaders().setAccept("application/json"),
-            url: `./hex/${ids.join(',')}`,
-            responseType: "json",
-            validateStatus: validateIn(200, 429)
-        });
-        console.log("RESPONSE");
-        console.dir(response);
-        if (429 === response.status) {
-            throw Error("Exceeded rate limit");
+        try {
+            const response = await this.axios.request<ADSBXErrorResponse | ADSBXPositionResponse>({
+                method: "GET",
+                headers: new AxiosHeaders().setAccept("application/json"),
+                url: `./hex/${ids.join(',')}`,
+                responseType: "json",
+                validateStatus: validateIn(200, 429)
+            });
+            console.log("RESPONSE");
+            console.dir(response);
+            if (429 === response.status) {
+                throw Error("Exceeded rate limit");
+            }
+            const {data} = response;
+            if (isADSBXErrorResponse(data)) {
+                throw Error(data.msg);
+            }
+            return freeze(data);
+        } catch (ex) {
+            console.dir(ex);
+            throw ex;
         }
-        const {data} = response;
-        if (isADSBXErrorResponse(data)) {
-            throw Error(data.msg);
-        }
-        return freeze(data);
     }
 
     /**
