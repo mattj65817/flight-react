@@ -26,7 +26,6 @@ export function ADSBXTrackingProvider({children, ...rest}: PropsWithChildren<ADS
         const axios = axiosFactory({
             baseURL: baseURL.href,
             responseType: "json",
-            validateStatus: validateIn(200, 429),
             headers
         });
         const client = ADSBXClient.create(axios);

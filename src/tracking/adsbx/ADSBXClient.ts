@@ -5,6 +5,7 @@ import {isADSBXErrorResponse} from "./ADSBX-types";
 import type {AxiosInstance} from "axios";
 import type {ADSBXErrorResponse, ADSBXPositionResponse} from "./ADSBX-types";
 import type {ModeSCode} from "../tracking-types";
+import {validateIn} from "@mattj65817/util-js";
 
 /**
  * {@link ADSBXClient} retrieves aircraft position data from a provider implementing the ADSBX v2 API (such as
@@ -35,7 +36,8 @@ export class ADSBXClient {
         try {
             const response = await this.axios.request<ADSBXErrorResponse | ADSBXPositionResponse>({
                 method: "GET",
-                url: `./hex/${ids.join(',')}`
+                url: `./hex/${ids.join(',')}`,
+                validateStatus: validateIn(200, 429),
             });
             console.log("RESPONSE");
             console.dir(response);
