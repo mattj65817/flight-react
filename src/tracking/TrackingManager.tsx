@@ -16,7 +16,6 @@ export function TrackingManager({children, service}: PropsWithChildren<TrackingM
     const updatePositions = useCallback(() => {
         Promise.resolve()
             .then(async () => {
-                console.log("GET POSITIONS");
                 const positions = await service.getPositions(ids);
                 dispatch({
                     kind: "positions updated",

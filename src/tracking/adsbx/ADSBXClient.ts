@@ -28,12 +28,15 @@ export class ADSBXClient {
      */
     async getPositions(ids: ModeSCode[]) {
         if (0 === ids.length) {
-            const now = Date.now();
-            return Promise.resolve(freeze<ADSBXPositionResponse>(_.assign({}, ADSBXClient.EMPTY_POSITIONS, {
-                ctime: now,
-                now
-            })));
+            return Promise.resolve(Date.now())
+                .then(now => _.assign({}, ADSBXClient.EMPTY_POSITIONS, {
+                    ctime: now,
+                    now
+                }));
         }
+        console.log("REQUEST");
+        console.log(typeof this.request);
+        console.dir(this.request);
         const response = await this.request<ADSBXErrorResponse | ADSBXPositionResponse>({
             method: "GET",
             headers: new AxiosHeaders().setAccept("application/json"),
@@ -41,6 +44,7 @@ export class ADSBXClient {
             responseType: "json",
             validateStatus: validateIn(200, 429)
         });
+        console.log("RESPONSE");
         console.dir(response);
         if (429 === response.status) {
             throw Error("Exceeded rate limit");
