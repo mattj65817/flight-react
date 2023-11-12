@@ -18,7 +18,7 @@ import type {ModeSCode} from "../tracking-types";
 export class ADSBXClient {
     [immerable] = true;
 
-    private constructor(private readonly request: AxiosInstance["request"]) {
+    private constructor(private readonly axios: AxiosInstance) {
     }
 
     /**
@@ -34,10 +34,7 @@ export class ADSBXClient {
                     now
                 }));
         }
-        console.log("REQUEST");
-        console.log(typeof this.request);
-        console.dir(this.request);
-        const response = await this.request<ADSBXErrorResponse | ADSBXPositionResponse>({
+        const response = await this.axios.request<ADSBXErrorResponse | ADSBXPositionResponse>({
             method: "GET",
             headers: new AxiosHeaders().setAccept("application/json"),
             url: `./hex/${ids.join(',')}`,
@@ -65,10 +62,7 @@ export class ADSBXClient {
      * @param axios the Axios instance, preconfigured with the API base URL (e.g. `https://opendata.adsb.fi/api/v2/`.)
      */
     static create(axios: AxiosInstance) {
-        console.log("CREATE");
-        console.dir(axios);
-        console.dir(axios.request);
-        return freeze(new ADSBXClient(axios.request));
+        return freeze(new ADSBXClient(axios));
     }
 
     /**
