@@ -16,7 +16,7 @@ import {validateIn} from "@mattj65817/util-js";
 export class ADSBXClient {
     [immerable] = true;
 
-    private constructor(private readonly axios: AxiosInstance) {
+    private constructor(private readonly request: AxiosInstance["request"]) {
     }
 
     /**
@@ -33,26 +33,19 @@ export class ADSBXClient {
                     now
                 }));
         }
-        try {
-            const response = await this.axios.request<ADSBXErrorResponse | ADSBXPositionResponse>({
-                method: "GET",
-                url: `./hex/${ids.join(',')}`,
-                validateStatus: validateIn(200, 429)
-            });
-            console.log("RESPONSE");
-            console.dir(response);
-            if (429 === response.status) {
-                throw Error("Exceeded rate limit");
-            }
-            const {data} = response;
-            if (isADSBXErrorResponse(data)) {
-                throw Error(data.msg);
-            }
-            return freeze(data);
-        } catch (ex) {
-            console.dir(ex);
-            throw ex;
+        const response = await this.request<ADSBXErrorResponse | ADSBXPositionResponse>({
+            method: "GET",
+            url: `./hex/${ids.join(',')}`,
+            validateStatus: validateIn(200, 429)
+        });
+        if (429 === response.status) {
+            throw Error("Exceeded rate limit");
         }
+        const {data} = response;
+        if (isADSBXErrorResponse(data)) {
+            throw Error(data.msg);
+        }
+        return freeze(data);
     }
 
     /**
@@ -63,7 +56,7 @@ export class ADSBXClient {
      *
      * @param axios the Axios instance, preconfigured with the API base URL (e.g. `https://opendata.adsb.fi/api/v2/`.)
      */
-    static create(axios: AxiosInstance) {
+    static create(axios: AxiosInstance["request"]) {
         return freeze(new ADSBXClient(axios));
     }
 
