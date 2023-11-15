@@ -1,5 +1,4 @@
 import {freeze, immerable} from "immer";
-import _ from "lodash";
 import {isADSBXErrorResponse} from "./ADSBX-types";
 
 import type {AxiosInstance} from "axios";
@@ -28,7 +27,8 @@ export class ADSBXClient {
     async getPositions(ids: ModeSCode[]) {
         if (0 === ids.length) {
             return Promise.resolve(Date.now())
-                .then(now => _.assign({}, ADSBXClient.EMPTY_POSITIONS, {
+                .then(now => freeze({
+                    ...ADSBXClient.EMPTY_POSITIONS,
                     ctime: now,
                     now
                 }));
@@ -37,7 +37,7 @@ export class ADSBXClient {
             const response = await this.axios.request<ADSBXErrorResponse | ADSBXPositionResponse>({
                 method: "GET",
                 url: `./hex/${ids.join(',')}`,
-                validateStatus: validateIn(200, 429),
+                validateStatus: validateIn(200, 429)
             });
             console.log("RESPONSE");
             console.dir(response);

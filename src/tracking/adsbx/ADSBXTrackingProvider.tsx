@@ -16,6 +16,7 @@ export interface ADSBXTrackingProviderProps extends ADSBXConfig {
 }
 
 export function ADSBXTrackingProvider({children, ...props}: PropsWithChildren<ADSBXTrackingProviderProps>) {
+    console.log("props", props);
     const {axiosFactory, auth, baseURL} = _.defaults({}, props, DEFAULT_PROPS);
     const positionService = useMemo(() => {
         let headers = new AxiosHeaders().setAccept("application/json");
@@ -25,7 +26,7 @@ export function ADSBXTrackingProvider({children, ...props}: PropsWithChildren<AD
         const axios = axiosFactory({
             baseURL: baseURL.href,
             responseType: "json",
-            headers
+            headers: headers.toJSON()
         });
         const client = ADSBXClient.create(axios);
         return ADSBXPositionService.create(client);
@@ -38,6 +39,6 @@ export function ADSBXTrackingProvider({children, ...props}: PropsWithChildren<AD
 }
 
 const DEFAULT_PROPS = freeze<Partial<ADSBXTrackingProviderProps>>({
-    axiosFactory: config => Axios.create(config),
+    axiosFactory: Axios.create,
     baseURL: new URL("https://opendata.adsb.fi/api/v2/")
 });
