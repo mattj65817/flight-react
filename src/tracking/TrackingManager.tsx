@@ -34,10 +34,30 @@ export function TrackingManager({children, service}: PropsWithChildren<TrackingM
                     }
                 });
             });
-    }, [dispatch, ids, service]);
+    }, [dispatch, service, ...ids]);
+
+    useEffect(() => {
+        console.log("dispatch changed");
+    }, [dispatch]);
+
+    useEffect(() => {
+        console.log("service changed");
+    }, [service]);
+
+    useEffect(() => {
+        console.log("ids changed");
+    }, [...ids]);
+
+    useEffect(() => {
+        console.log("updatePositions changed");
+    }, [updatePositions]);
+
 
     /* Effect to defer a position update upon expiration of the tracking interval. */
     const {nextUpdate} = state;
+    useEffect(() => {
+        console.log("nextUpdate changed");
+    }, [nextUpdate]);
     useEffect(() => {
         const delay = nextUpdate.diff(DateTime.utc()).toMillis();
         if (delay <= 0) {

@@ -2,7 +2,7 @@ import * as React from "react";
 import Axios, {AxiosHeaders, AxiosInstance, CreateAxiosDefaults} from "axios";
 import {freeze} from "immer";
 import _ from "lodash";
-import {PropsWithChildren, useMemo} from "react";
+import {PropsWithChildren, useEffect, useMemo} from "react";
 import {TrackingManager} from "../TrackingManager";
 import {ADSBXConfig} from "./ADSBX-types";
 import {ADSBXClient} from "./ADSBXClient";
@@ -16,22 +16,25 @@ export interface ADSBXTrackingProviderProps extends ADSBXConfig {
 }
 
 export function ADSBXTrackingProvider({children, ...props}: PropsWithChildren<ADSBXTrackingProviderProps>) {
-    const {axiosFactory, auth, baseURL} = _.defaults({}, props, DEFAULT_PROPS);
+    const {axiosFactory, auth, baseURL: {href}} = _.defaults({}, props, DEFAULT_PROPS);
     const positionService = useMemo(() => {
         let headers = new AxiosHeaders().setAccept("application/json");
         if (null != auth) {
             headers = headers.set("api-auth", auth);
         }
-        const axios = axiosFactory({
-            baseURL: baseURL.href,
+        const axios = axiosFactory(freeze({
+            baseURL: href,
             responseType: "json",
             headers: {
                 common: headers
             }
-        });
+        }, true));
         const client = ADSBXClient.create(axios.request);
         return ADSBXPositionService.create(client);
-    }, [axiosFactory, auth, baseURL.href]);
+    }, [axiosFactory, auth, href]);
+    useEffect(() => {
+        console.log("positionService changed.");
+    }, [positionService]);
     return (
         <TrackingManager service={positionService}>
             {children}
