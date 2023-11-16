@@ -1,11 +1,6 @@
 import {freeze, immerable} from "immer";
 import _ from "lodash";
-import {
-    isADSBXAltitude,
-    isADSBXCoords,
-    isADSBXPositionResponse,
-    isADSBXTrack
-} from "./ADSBX-types";
+import {isADSBXAltitude, isADSBXCoords, isADSBXPositionResponse, isADSBXTrack} from "./ADSBX-types";
 
 import type {ADSBXPositionResponse} from "./ADSBX-types";
 import type {ModeSCode, Positions} from "../tracking-types";

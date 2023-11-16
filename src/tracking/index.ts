@@ -1,5 +1,6 @@
 import {isModeSCode} from "./tracking-types";
-import {TrackingProvider, useTrackingState} from "./TrackingProvider";
+import {useTrackingPosition, useTrackingPositions} from "./TrackingContext";
+import {TrackingProvider} from "./TrackingProvider";
 
 import type {Kinded, ModeSCode, Positions, Timestamped} from "./tracking-types";
 import type {TrackingProviderProps} from "./TrackingProvider";
@@ -13,5 +14,6 @@ export {
     TrackingProvider,
     TrackingProviderProps,
     isModeSCode,
-    useTrackingState
+    useTrackingPosition,
+    useTrackingPositions
 };

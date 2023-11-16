@@ -1,15 +1,30 @@
 import * as React from "react";
 import {useCallback, useEffect} from "react";
 import {DateTime} from "luxon";
-import {useTracking} from "./TrackingProvider";
+import {useTracking} from "./TrackingContext";
 
 import type {PropsWithChildren} from "react";
 import type {PositionService} from "./tracking-types";
 
+/**
+ * Properties for a {@link TrackingManager} component.
+ */
 interface TrackingManagerProps {
+
+    /**
+     * Position service to query for aircraft positions.
+     */
     service: PositionService;
 }
 
+/**
+ * {@link TrackingManager} handles creation and update of the {@link TrackingState}. Performs periodic aircraft position
+ * queries via a configured {@link PositionService}, updating state as appropriate.
+ *
+ * @param children the child element(s).
+ * @param service the position service.
+ * @constructor
+ */
 export function TrackingManager({children, service}: PropsWithChildren<TrackingManagerProps>) {
     const [state, dispatch] = useTracking();
 

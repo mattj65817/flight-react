@@ -1,9 +1,9 @@
 import {freeze, immerable, produce} from "immer";
 import _ from "lodash";
-
-import type {ModeSCode, Positions, Timestamped} from "./tracking-types";
-import type {DurationLike} from "luxon";
 import {DateTime} from "luxon";
+
+import type {DurationLike} from "luxon";
+import type {ModeSCode, Positions, Timestamped} from "./tracking-types";
 
 /**
  * Configuration for creating an initial {@link TrackingState}.
@@ -31,10 +31,18 @@ export class TrackingState {
         this.trackingInterval = config.trackingInterval;
     }
 
+    /**
+     * Current update interval, {@link TrackingState.nonTrackingInterval} if at least one aircraft is being actively
+     * tracked, else {@link TrackingState.trackingInterval}.
+     */
     get interval() {
-        return this.tracking ? this.trackingInterval : this.nonTrackingInterval;
+        const {nonTrackingInterval, tracking, trackingInterval} = this;
+        return tracking ? trackingInterval : nonTrackingInterval;
     }
 
+    /**
+     * Flag indicating whether at least one aircraft is being actively tracked.
+     */
     get tracking() {
         return 0 !== Object.keys(this.positions).length;
     }
@@ -87,6 +95,9 @@ export class TrackingState {
     }
 }
 
+/**
+ * Action performed when an ADSB-X API request returns updated aircraft positions.
+ */
 interface PositionsUpdated {
     kind: "positions updated";
     payload: Timestamped<{
@@ -94,6 +105,9 @@ interface PositionsUpdated {
     }>;
 }
 
+/**
+ * Action performed when an ADSB-X API request returns an error.
+ */
 interface ErrorOccurred {
     kind: "error occurred";
     payload: Timestamped<{
@@ -101,6 +115,9 @@ interface ErrorOccurred {
     }>;
 }
 
+/**
+ * All actions supported by {@link TrackingState.reduce}.
+ */
 export type TrackingAction =
     | ErrorOccurred
     | PositionsUpdated;

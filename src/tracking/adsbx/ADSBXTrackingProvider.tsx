@@ -1,13 +1,17 @@
 import * as React from "react";
-import Axios, {AxiosHeaders, AxiosInstance, CreateAxiosDefaults, isAxiosError} from "axios";
-import axiosRetry, {exponentialDelay, IAxiosRetryConfig} from "axios-retry";
+import Axios, {AxiosHeaders, isAxiosError} from "axios";
+import axiosRetry, {exponentialDelay} from "axios-retry";
 import {freeze} from "immer";
 import _ from "lodash";
-import {PropsWithChildren, useMemo} from "react";
+import {useMemo} from "react";
 import {TrackingManager} from "../TrackingManager";
-import {ADSBXConfig} from "./ADSBX-types";
 import {ADSBXClient} from "./ADSBXClient";
 import {ADSBXPositionService} from "./ADSBXPositionService";
+
+import type {AxiosInstance, CreateAxiosDefaults} from "axios";
+import type {IAxiosRetryConfig} from "axios-retry";
+import type {PropsWithChildren} from "react";
+import type {ADSBXConfig} from "./ADSBX-types";
 
 /**
  * Configuration for an ADSB-X position provider.
