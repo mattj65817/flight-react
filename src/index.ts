@@ -1,4 +1,4 @@
-import {TrackingProvider, useTrackingPosition, useTrackingPositions} from "./tracking";
+import {TrackingProvider, isModeSCode, useTrackingPosition, useTrackingPositions} from "./tracking";
 
 import type {ModeSCode, Positions, TrackingProviderProps} from "./tracking";
 
@@ -8,6 +8,7 @@ export {
     Positions,
     TrackingProvider,
     TrackingProviderProps,
+    isModeSCode,
     useTrackingPosition,
     useTrackingPositions
 };
