@@ -1,10 +1,10 @@
 import {freeze, immerable} from "immer";
 import {isADSBXErrorResponse} from "./ADSBX-types";
+import {isAxiosError} from "axios";
 
-import type {AxiosInstance} from "axios";
+import type {AxiosInstance, AxiosResponse} from "axios";
 import type {ADSBXErrorResponse, ADSBXPositionResponse} from "./ADSBX-types";
 import type {ModeSCode} from "../tracking-types";
-import {validateIn} from "@mattj65817/util-js";
 
 /**
  * {@link ADSBXClient} retrieves aircraft position data from a provider implementing the ADSBX v2 API (such as
@@ -33,13 +33,17 @@ export class ADSBXClient {
                     now
                 }));
         }
-        const response = await this.request<ADSBXErrorResponse | ADSBXPositionResponse>({
-            method: "GET",
-            url: `./hex/${ids.join(',')}`,
-            validateStatus: validateIn(200, 429)
-        });
-        if (429 === response.status) {
-            throw Error("Exceeded rate limit");
+        let response: AxiosResponse<ADSBXPositionResponse | ADSBXErrorResponse, unknown>;
+        try {
+            response = await this.request<ADSBXErrorResponse | ADSBXPositionResponse>({
+                method: "GET",
+                url: `./hex/${ids.join(',')}`
+            });
+        } catch (ex) {
+            if (isAxiosError(ex) && 429 === ex.response!.status) {
+                throw Error("Exceeded rate limit");
+            }
+            throw ex;
         }
         const {data} = response;
         if (isADSBXErrorResponse(data)) {

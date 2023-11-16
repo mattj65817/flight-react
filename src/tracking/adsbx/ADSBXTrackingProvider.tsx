@@ -1,5 +1,6 @@
 import * as React from "react";
-import Axios, {AxiosHeaders, AxiosInstance, CreateAxiosDefaults} from "axios";
+import Axios, {AxiosHeaders, AxiosInstance, CreateAxiosDefaults, isAxiosError} from "axios";
+import axiosRetry, {exponentialDelay, IAxiosRetryConfig} from "axios-retry";
 import {freeze} from "immer";
 import _ from "lodash";
 import {PropsWithChildren, useEffect, useMemo} from "react";
@@ -15,6 +16,15 @@ export interface ADSBXTrackingProviderProps extends ADSBXConfig {
     axiosFactory: (config?: CreateAxiosDefaults) => AxiosInstance;
 }
 
+/**
+ * ADSB-X retry configuration, retries up to 3 times after exponential backoff on `429 TOO MANY REQUESTS` error.
+ */
+const retryConfig = freeze<IAxiosRetryConfig>({
+    retries: 3,
+    retryCondition: err => isAxiosError(err) && 429 === err.response!.status,
+    retryDelay: exponentialDelay
+});
+
 export function ADSBXTrackingProvider({children, ...props}: PropsWithChildren<ADSBXTrackingProviderProps>) {
     const {axiosFactory, auth, baseURL: {href}} = _.defaults({}, props, DEFAULT_PROPS);
     const positionService = useMemo(() => {
@@ -29,6 +39,7 @@ export function ADSBXTrackingProvider({children, ...props}: PropsWithChildren<AD
                 common: headers
             }
         }, true));
+        axiosRetry(axios, retryConfig);
         const client = ADSBXClient.create(axios.request);
         return ADSBXPositionService.create(client);
     }, [axiosFactory, auth, href]);
