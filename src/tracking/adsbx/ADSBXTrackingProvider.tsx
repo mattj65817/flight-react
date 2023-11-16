@@ -43,9 +43,6 @@ export function ADSBXTrackingProvider({children, ...props}: PropsWithChildren<AD
         const client = ADSBXClient.create(axios.request);
         return ADSBXPositionService.create(client);
     }, [axiosFactory, auth, href]);
-    useEffect(() => {
-        console.log("positionService changed.");
-    }, [positionService]);
     return (
         <TrackingManager service={positionService}>
             {children}
