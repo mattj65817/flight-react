@@ -39,15 +39,12 @@ export function TrackingManager({children, service}: PropsWithChildren<TrackingM
     /* Effect to defer a position update upon expiration of the tracking interval. */
     const {nextUpdate} = state;
     useEffect(() => {
-        console.log("nextUpdate changed", nextUpdate.toISO());
-    }, [nextUpdate]);
-    useEffect(() => {
         const delay = nextUpdate.diff(DateTime.utc()).toMillis();
-        console.log("Delay", delay);
         if (delay <= 0) {
             updatePositions();
         } else {
-            return () => clearTimeout(setTimeout(updatePositions, delay));
+            const id = setTimeout(updatePositions, delay);
+            return () => clearTimeout(id);
         }
     }, [updatePositions, nextUpdate]);
     return (
