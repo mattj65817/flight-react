@@ -81,9 +81,7 @@ export class TrackingState {
                                 draft.positions[id] = Object.assign(draft.positions[id] || {}, position, {timestamp});
                             }
                         });
-                    console.log("Interval", draft.interval);
                     draft.nextUpdate = timestamp.plus(draft.interval);
-                    console.log(draft.nextUpdate.toISO());
                 });
         }
     }

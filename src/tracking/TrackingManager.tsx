@@ -1,8 +1,10 @@
 import * as React from "react";
-import {PositionService} from "./tracking-types";
-import {PropsWithChildren, useCallback, useEffect} from "react";
+import {useCallback, useEffect} from "react";
 import {DateTime} from "luxon";
 import {useTracking} from "./TrackingProvider";
+
+import type {PropsWithChildren} from "react";
+import type {PositionService} from "./tracking-types";
 
 interface TrackingManagerProps {
     service: PositionService;
