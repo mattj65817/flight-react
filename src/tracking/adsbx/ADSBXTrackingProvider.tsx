@@ -3,7 +3,7 @@ import Axios, {AxiosHeaders, AxiosInstance, CreateAxiosDefaults, isAxiosError} f
 import axiosRetry, {exponentialDelay, IAxiosRetryConfig} from "axios-retry";
 import {freeze} from "immer";
 import _ from "lodash";
-import {PropsWithChildren, useEffect, useMemo} from "react";
+import {PropsWithChildren, useMemo} from "react";
 import {TrackingManager} from "../TrackingManager";
 import {ADSBXConfig} from "./ADSBX-types";
 import {ADSBXClient} from "./ADSBXClient";
