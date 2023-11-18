@@ -58,6 +58,67 @@ describe("TrackingState", () => {
             expect(updated.tracking).toBe(false);
             expect(updated.trackingInterval).toStrictEqual(initial.trackingInterval);
         });
+        describe("Action: ids updated", () => {
+            test("Clears any previous error", () => {
+                const now = DateTime.now().setZone("UTC");
+                const intermediate = TrackingState.reduce(initial, {
+                    kind: "error occurred",
+                    payload: {
+                        error: "this is an error",
+                        timestamp: now
+                    }
+                });
+                expect(intermediate.error).not.toBeUndefined();
+                const updated = TrackingState.reduce(intermediate, {
+                    kind: "ids updated",
+                    payload: []
+                });
+                expect(updated.error).toBeUndefined();
+            });
+            test("Makes no change if the list of IDs is the same.", () => {
+                const updated = TrackingState.reduce(initial, {
+                    kind: "ids updated",
+                    payload: ["a60631"]
+                });
+                expect(updated.error).toBeUndefined();
+                expect(updated.ids).toBe(initial.ids);
+                expect(updated.positions).toBe(initial.positions);
+                expect(updated.nextUpdate).toBe(initial.nextUpdate);
+            });
+            test("Adds newly tracked IDs.", () => {
+                const before = Date.now();
+                const updated = TrackingState.reduce(initial, {
+                    kind: "ids updated",
+                    payload: ["a60632", "a60631"]
+                });
+                expect(updated.error).toBeUndefined();
+                expect(updated.ids).toStrictEqual(["a60631", "a60632"]);
+                expect(updated.positions).toBe(initial.positions);
+                expect(updated.nextUpdate.toMillis()).toBeGreaterThanOrEqual(before);
+            });
+            test("Removes no longer tracked IDs.", () => {
+                const before = Date.now();
+                const updated = TrackingState.reduce(initial, {
+                    kind: "ids updated",
+                    payload: ["a60632"]
+                });
+                expect(updated.error).toBeUndefined();
+                expect(updated.ids).toStrictEqual(["a60632"]);
+                expect(updated.positions).toStrictEqual({});
+                expect(updated.nextUpdate.toMillis()).toBeGreaterThanOrEqual(before);
+            });
+            test("Sorts and ensures uniqueness of the ID list.", () => {
+                const before = Date.now();
+                const updated = TrackingState.reduce(initial, {
+                    kind: "ids updated",
+                    payload: ["a60634", "a60633", "a60632", "a60633", "a60634"]
+                });
+                expect(updated.error).toBeUndefined();
+                expect(updated.ids).toStrictEqual(["a60632", "a60633", "a60634"]);
+                expect(updated.positions).toStrictEqual({});
+                expect(updated.nextUpdate.toMillis()).toBeGreaterThanOrEqual(before);
+            });
+        });
         describe("Action: positions updated", () => {
             test("Clears any previous error", () => {
                 const now = DateTime.now().setZone("UTC");

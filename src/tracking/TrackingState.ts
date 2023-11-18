@@ -71,6 +71,29 @@ export class TrackingState {
                     draft.positions = {};
                     draft.nextUpdate = payload.timestamp.plus(draft.nonTrackingInterval);
                 });
+            case "ids updated":
+                return produce(previous, draft => {
+                    delete draft.error;
+
+                    /* Do nothing unless the list has actually changed. */
+                    const uniqueIds = _.uniq(payload).sort();
+                    if (!_.isEqual(draft.ids, uniqueIds)) {
+
+                        /* Update the list of IDs to track. */
+                        const removedIds = _.remove(draft.ids, id => -1 === payload.indexOf(id));
+                        draft.ids.push(..._.difference(uniqueIds, draft.ids));
+                        draft.ids.sort();
+
+                        /* Remove positions for aircraft which are no longer tracked. */
+                        removedIds.forEach(idString => {
+                            const id = idString as ModeSCode;
+                            if (-1 === payload.indexOf(id)) {
+                                delete draft.positions[id];
+                            }
+                        });
+                        draft.nextUpdate = DateTime.utc();
+                    }
+                });
             case "positions updated":
                 return produce(previous, draft => {
                     delete draft.error;
@@ -96,16 +119,6 @@ export class TrackingState {
 }
 
 /**
- * Action performed when an ADSB-X API request returns updated aircraft positions.
- */
-interface PositionsUpdated {
-    kind: "positions updated";
-    payload: Timestamped<{
-        positions: Positions
-    }>;
-}
-
-/**
  * Action performed when an ADSB-X API request returns an error.
  */
 interface ErrorOccurred {
@@ -116,8 +129,27 @@ interface ErrorOccurred {
 }
 
 /**
+ * Action performed when the list of aircraft IDs to track changes.
+ */
+interface IdsUpdated {
+    kind: "ids updated",
+    payload: ModeSCode[]
+}
+
+/**
+ * Action performed when an ADSB-X API request returns updated aircraft positions.
+ */
+interface PositionsUpdated {
+    kind: "positions updated";
+    payload: Timestamped<{
+        positions: Positions
+    }>;
+}
+
+/**
  * All actions supported by {@link TrackingState.reduce}.
  */
 export type TrackingAction =
     | ErrorOccurred
+    | IdsUpdated
     | PositionsUpdated;

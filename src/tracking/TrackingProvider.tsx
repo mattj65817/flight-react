@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useReducer, useMemo} from "react";
+import {useReducer, useMemo, useEffect} from "react";
 import {freeze} from "immer";
 import {TrackingState} from "./TrackingState";
 import {ADSBXTrackingProvider} from "./adsbx/ADSBXTrackingProvider";
@@ -32,6 +32,17 @@ export function TrackingProvider(props: PropsWithChildren<TrackingProviderProps>
     const {config, children} = props;
     const [state, dispatch] = useReducer(TrackingState.reduce, props, TrackingState.initial);
     const contents = useMemo(() => freeze<TrackingContextContents>([state, dispatch]), [dispatch, state]);
+
+    /* Update state when the ID list changes. */
+    const {ids} = props;
+    useEffect(() => {
+        dispatch({
+            kind: "ids updated",
+            payload: ids
+        });
+    }, [dispatch, ...ids]);
+
+    /* Emit the appropriate tracking provider per config.kind. */
     switch (config.kind) {
         case "adsbx":
             return (
