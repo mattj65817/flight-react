@@ -51,7 +51,7 @@ export function TrackingManager({children, service}: PropsWithChildren<TrackingM
                     }
                 });
             });
-    }, [dispatch, service, ...ids]);
+    }, [dispatch, service, ids.join(",")]);
 
     /* Effect to defer a position update upon expiration of the tracking interval. */
     const {nextUpdate} = state;
