@@ -40,7 +40,7 @@ export function TrackingProvider(props: PropsWithChildren<TrackingProviderProps>
             kind: "ids updated",
             payload: ids
         });
-    }, [dispatch, ...ids]);
+    }, [dispatch, ids.join(",")]);
 
     /* Emit the appropriate tracking provider per config.kind. */
     switch (config.kind) {
