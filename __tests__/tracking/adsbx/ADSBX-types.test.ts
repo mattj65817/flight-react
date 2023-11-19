@@ -1,4 +1,4 @@
-import {isADSBXAltitude, isADSBXCoords, isADSBXPositionResponse, isADSBXTrack} from "../../../src/tracking/adsbx/ADSBX-types";
+import {isADSBXAltitude, isADSBXCoords, isADSBXPositionResponse, isADSBXTrack} from "../../../src/tracking/adsbx/adsbx-types";
 import {readJsonResource} from "@mattj65817/test-js";
 
 describe("ADSBX-types", () => {
@@ -28,7 +28,7 @@ describe("ADSBX-types", () => {
     });
     describe("isADSBXPositionResponse()", () => {
         test("Sample response", async () => {
-            const source = await readJsonResource(__dirname, "ADSBX-positions-response.json");
+            const source = await readJsonResource(__dirname, "adsbx-positions-response.json");
             expect(isADSBXPositionResponse(source)).toBe(true);
         });
     });

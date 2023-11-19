@@ -8,16 +8,16 @@ import {TrackingManager} from "../TrackingManager";
 import {ADSBXClient} from "./ADSBXClient";
 import {ADSBXPositionService} from "./ADSBXPositionService";
 
-import type {AxiosInstance, CreateAxiosDefaults} from "axios";
 import type {IAxiosRetryConfig} from "axios-retry";
 import type {PropsWithChildren} from "react";
-import type {ADSBXConfig} from "./ADSBX-types";
+import {AxiosFactory} from "../../flight-types";
+import type {ADSBXConfig} from "./adsbx-types";
 
 /**
  * Configuration for an ADSB-X position provider.
  */
 export interface ADSBXTrackingProviderProps extends ADSBXConfig {
-    axiosFactory: (config?: CreateAxiosDefaults) => AxiosInstance;
+    axiosFactory: AxiosFactory;
 }
 
 /**
@@ -48,9 +48,10 @@ export function ADSBXTrackingProvider({children, ...props}: PropsWithChildren<AD
         return ADSBXPositionService.create(client);
     }, [axiosFactory, auth, href]);
     return (
-        <TrackingManager service={positionService}>
+        <>
+            <TrackingManager service={positionService}/>
             {children}
-        </TrackingManager>
+        </>
     );
 }
 

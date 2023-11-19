@@ -1,9 +1,7 @@
-import * as React from "react";
 import {useCallback, useEffect} from "react";
 import {DateTime} from "luxon";
 import {useTracking} from "./TrackingContext";
 
-import type {PropsWithChildren} from "react";
 import type {PositionService} from "./tracking-types";
 
 /**
@@ -25,7 +23,7 @@ interface TrackingManagerProps {
  * @param service the position service.
  * @constructor
  */
-export function TrackingManager({children, service}: PropsWithChildren<TrackingManagerProps>) {
+export function TrackingManager({service}: TrackingManagerProps) {
     const [state, dispatch] = useTracking();
 
     /* Callback to trigger a request to the position provider and (if successful) corresponding status update. */
@@ -64,9 +62,5 @@ export function TrackingManager({children, service}: PropsWithChildren<TrackingM
             return () => clearTimeout(id);
         }
     }, [updatePositions, nextUpdate]);
-    return (
-        <>
-            {children}
-        </>
-    );
+    return null;
 }

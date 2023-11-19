@@ -4,17 +4,17 @@ import _, {isError} from "lodash";
 import {readJsonResource} from "@mattj65817/test-js";
 import {ADSBXClient} from "../../../src/tracking/adsbx/ADSBXClient";
 
-import type {ADSBXPositionResponse} from "../../../src/tracking/adsbx/ADSBX-types";
+import type {ADSBXPositionResponse} from "../../../src/tracking/adsbx/adsbx-types";
 
 describe("ADSBXClient", () => {
-    describe("getPositionsByModeSCodes()", () => {
-        test("Successfully returns results from ADSBX-positions-response.json", async () => {
+    describe("getPositions()", () => {
+        test("Successfully returns results from adsbx-positions-response.json", async () => {
             const axios = Axios.create({
                 baseURL: "https://opendata.adsb.fi/api/v2/"
             });
             const axiosMock = new MockAdapter(axios);
             const instance = ADSBXClient.create(axios.request);
-            const response = await readJsonResource<ADSBXPositionResponse>(__dirname, "./ADSBX-positions-response.json");
+            const response = await readJsonResource<ADSBXPositionResponse>(__dirname, "./adsbx-positions-response.json");
             const modeSCodes = _.uniq(_.map(response.ac, "hex")).sort();
             axiosMock.onGet(`./hex/${modeSCodes.join(",")}`).reply(200, JSON.stringify(response));
             const positions = await instance.getPositions(modeSCodes);

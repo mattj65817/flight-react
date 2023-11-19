@@ -1,0 +1,30 @@
+{
+  "place_id": 27443438,
+  "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+  "osm_type": "relation",
+  "osm_id": 11561799,
+  "lat": "43.216816800000004",
+  "lon": "-89.77287739842154",
+  "class": "boundary",
+  "type": "administrative",
+  "place_rank": 14,
+  "importance": 0.3193657532333713,
+  "addresstype": "municipality",
+  "name": "Town of Mazomanie",
+  "display_name": "Town of Mazomanie, Dane County, Wisconsin, 53560, United States",
+  "address": {
+    "municipality": "Town of Mazomanie",
+    "county": "Dane County",
+    "state": "Wisconsin",
+    "ISO3166-2-lvl4": "US-WI",
+    "postcode": "53560",
+    "country": "United States",
+    "country_code": "us"
+  },
+  "boundingbox": [
+    "43.1619470",
+    "43.2699020",
+    "-89.8381598",
+    "-89.7194799"
+  ]
+}

@@ -1,9 +1,9 @@
-import {freeze, immerable} from "immer";
-import {isADSBXErrorResponse} from "./ADSBX-types";
 import {isAxiosError} from "axios";
+import {freeze, immerable} from "immer";
+import {isADSBXErrorResponse} from "./adsbx-types";
 
 import type {AxiosInstance, AxiosResponse} from "axios";
-import type {ADSBXErrorResponse, ADSBXPositionResponse} from "./ADSBX-types";
+import type {ADSBXErrorResponse, ADSBXPositionResponse} from "./adsbx-types";
 import type {ModeSCode} from "../tracking-types";
 
 /**

@@ -1,12 +1,13 @@
 import {readJsonResource} from "@mattj65817/test-js";
 import {ADSBXParser} from "../../../src/tracking/adsbx/ADSBXParser";
-import {ADSBXPositionResponse} from "../../../src/tracking/adsbx/ADSBX-types";
+
+import type {ADSBXPositionResponse} from "../../../src/tracking/adsbx/adsbx-types";
 
 describe("ADSBXParser", () => {
     const instance = ADSBXParser.create();
     describe("parsePositions()", () => {
-        test("ADSBX-positions-response.json", async () => {
-            const source = await readJsonResource<ADSBXPositionResponse>(__dirname, "./ADSBX-positions-response.json");
+        test("adsbx-positions-response.json", async () => {
+            const source = await readJsonResource<ADSBXPositionResponse>(__dirname, "./adsbx-positions-response.json");
             expect(instance.parsePositions(source)).toStrictEqual({
                 a800d3: {
                     altitude: 1700,

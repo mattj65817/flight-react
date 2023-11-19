@@ -7,7 +7,8 @@ import {TrackingContext} from "./TrackingContext";
 
 import type {DurationLike} from "luxon";
 import type {PropsWithChildren} from "react";
-import type {Kinded, ModeSCode} from "./tracking-types";
+import type {Kinded} from "../flight-types";
+import type {ModeSCode} from "./tracking-types";
 import type {TrackingContextContents} from "./TrackingContext";
 import type {ADSBXTrackingProviderProps} from "./adsbx/ADSBXTrackingProvider";
 
@@ -15,7 +16,8 @@ import type {ADSBXTrackingProviderProps} from "./adsbx/ADSBXTrackingProvider";
  * Properties for a {@link TrackingProvider} component.
  */
 export interface TrackingProviderProps {
-    config: Kinded<ADSBXTrackingProviderProps, "adsbx">;
+    config:
+        | Kinded<ADSBXTrackingProviderProps, "adsbx">;
     ids: ModeSCode[];
     nonTrackingInterval: DurationLike;
     trackingInterval: DurationLike;
@@ -53,3 +55,4 @@ export function TrackingProvider(props: PropsWithChildren<TrackingProviderProps>
             );
     }
 }
+

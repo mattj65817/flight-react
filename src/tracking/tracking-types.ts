@@ -1,4 +1,4 @@
-import {DateTime} from "luxon";
+import {GeoCoordinates} from "../flight-types";
 
 /**
  * Hexadecimal Mode S code.
@@ -11,10 +11,7 @@ export type ModeSCode = Lowercase<string>;
 export type Positions = {
     [K in ModeSCode]: {
         altitude: "ground" | number;
-        coordinates: [
-            latitude: number,
-            longitude: number
-        ];
+        coordinates: GeoCoordinates;
         track?: number;
         velocity?: {
             horizontal: number;
@@ -38,16 +35,6 @@ export interface PositionService {
      */
     getPositions(ids: ModeSCode[]): Promise<Positions>;
 }
-
-/**
- * Generic object with an associated `kind` attribute.
- */
-export type Kinded<T extends object, K extends string> = T & { kind: K };
-
-/**
- * Generic object with an associated timestamp.
- */
-export type Timestamped<T extends object> = T & { timestamp: DateTime };
 
 /**
  * Type guard for {@link ModeSCode}.
