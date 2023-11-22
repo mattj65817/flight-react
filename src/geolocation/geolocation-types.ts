@@ -10,5 +10,5 @@ export interface GeolocationService {
      *
      * @param coordinates the geographic coordinates.
      */
-    getLocation(coordinates: GeoCoordinates): Promise<null | string>;
+    getPlace(coordinates: GeoCoordinates): Promise<null | string>;
 }

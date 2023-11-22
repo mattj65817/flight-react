@@ -1,9 +1,13 @@
-import {createContext, useContext} from "react";
+import {createContext, Dispatch, useContext} from "react";
+import {ReverseGeolocationAction, ReverseGeolocationState} from "./ReverseGeolocationState";
 
 /**
  * Contents of the {@link ReverseGeolocationContext}.
  */
-export type ReverseGeolocationContextContents = [];
+export type ReverseGeolocationContextContents = [
+    state: ReverseGeolocationState,
+    dispatch: Dispatch<ReverseGeolocationAction>
+];
 
 /**
  * Context through which reverse geolocation data is exposed by a {@link ReverseGeolocationProvider} component.
@@ -19,4 +23,8 @@ export function useReverseGeolocation() {
         throw Error("Context is empty.");
     }
     return context;
+}
+
+export function useReverseGeolocationPlace() {
+
 }

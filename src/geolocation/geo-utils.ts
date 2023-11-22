@@ -24,7 +24,7 @@ export function pointRadialDistance(from: GeoCoordinates, course: number, distan
 }
 
 /**
- * Calculate the course, return course, and distance between `from` and `to` coordinates.
+ * Calculate the course, return course, and distance in nautical miles between `from` and `to` coordinates.
  *
  * @param from the starting point.
  * @param to the ending point.

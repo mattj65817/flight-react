@@ -16,7 +16,7 @@ describe("NominatimClient", () => {
             const instance = NominatimClient.create(axios.request);
             const response = await readJsonResource<NominatimResponse>(__dirname, "./nominatim-reverse-response.json");
             axiosMock.onGet("./reverse").reply(200, JSON.stringify(response));
-            expect(await instance.getLocation([43.220, -89.765])).toBe("Mazomanie, WI");
+            expect(await instance.getPlace([43.220, -89.765])).toBe("Mazomanie, WI");
         });
         test("Throws on rate limit failure", async () => {
             const axios = Axios.create({
@@ -26,7 +26,7 @@ describe("NominatimClient", () => {
             const instance = NominatimClient.create(axios.request);
             axiosMock.onGet("./reverse").reply(429);
             try {
-                await instance.getLocation([43.220, -89.765]);
+                await instance.getPlace([43.220, -89.765]);
                 expect(true).toBe(false);
             } catch (ex) {
                 if (isError(ex)) {

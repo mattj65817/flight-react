@@ -12,7 +12,7 @@ import type {ModeSCode, Positions} from "./tracking-types";
 export type TrackingStateConfig = Omit<TrackingState, "error" | "interval" | "nextUpdate" | "positions" | "tracking" | typeof immerable>;
 
 /**
- * {@link TrackingState} holds the current state
+ * {@link TrackingState} holds the state of a {@link TrackingProvider} component.
  */
 export class TrackingState {
     [immerable] = true;

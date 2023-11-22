@@ -10,8 +10,8 @@ export class NominatimGeolocationService implements GeolocationService {
     private constructor(private readonly client: NominatimClient) {
     }
 
-    getLocation(coordinates: GeoCoordinates): Promise<string | null> {
-        throw "TODO";
+    getPlace(coordinates: GeoCoordinates): Promise<string | null> {
+        return this.client.getPlace(coordinates);
     }
 
     static create(client: NominatimClient) {

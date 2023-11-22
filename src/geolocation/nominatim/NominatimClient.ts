@@ -12,7 +12,7 @@ export class NominatimClient {
     private constructor(private readonly axios: AxiosInstance["request"]) {
     }
 
-    async getLocation(coordinates: GeoCoordinates) {
+    async getPlace(coordinates: GeoCoordinates) {
         let response: AxiosResponse<NominatimResponse>;
         try {
             response = await this.axios({
