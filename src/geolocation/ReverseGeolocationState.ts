@@ -6,7 +6,7 @@ import {pointToPointCourseDistance} from "./geo-utils";
 /**
  * Configuration for creating an initial {@link ReverseGeolocationState}.
  */
-export type ReverseGeolocationStateConfig = Omit<ReverseGeolocationState, "error" | "place" | "placeCoordinates" | typeof immerable>;
+export type ReverseGeolocationStateConfig = Omit<ReverseGeolocationState, "error" | "place" | typeof immerable>;
 
 /**
  * {@link ReverseGeolocationState} holds the state of a {@link ReverseGeolocationProvider} component.
