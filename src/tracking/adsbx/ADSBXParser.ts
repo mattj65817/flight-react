@@ -2,8 +2,9 @@ import {freeze, immerable} from "immer";
 import _ from "lodash";
 import {isADSBXAltitude, isADSBXCoords, isADSBXPositionResponse, isADSBXTrack} from "./adsbx-types";
 
+import type {ModeSCode} from "@mattj65817/aviation-js";
 import type {ADSBXPositionResponse} from "./adsbx-types";
-import type {ModeSCode, Positions} from "../tracking-types";
+import type {Positions} from "../tracking-types";
 
 /**
  * {@link ADSBXParser} parses responses from ADSBX v2 API requests.

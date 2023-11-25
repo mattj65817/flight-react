@@ -2,7 +2,8 @@ import {freeze, immerable} from "immer";
 import {ADSBXClient} from "./ADSBXClient";
 import {ADSBXParser} from "./ADSBXParser";
 
-import type {ModeSCode, PositionService} from "../tracking-types";
+import type {ModeSCode} from "@mattj65817/aviation-js";
+import type {PositionService} from "../tracking-types";
 
 /**
  * {@link ADSBXPositionService} is an implementation of the {@link PositionService} interface which uses a service

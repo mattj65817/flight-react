@@ -3,8 +3,9 @@ import _ from "lodash";
 import {DateTime} from "luxon";
 
 import type {DurationLike} from "luxon";
+import type {ModeSCode} from "@mattj65817/aviation-js";
 import type {Timestamped} from "../flight-types";
-import type {ModeSCode, Positions} from "./tracking-types";
+import type {Positions} from "./tracking-types";
 
 /**
  * Configuration for creating an initial {@link TrackingState}.

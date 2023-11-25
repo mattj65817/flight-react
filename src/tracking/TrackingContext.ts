@@ -2,7 +2,8 @@ import {createContext, useContext, useMemo} from "react";
 import {TrackingState} from "./TrackingState";
 
 import type {Dispatch} from "react";
-import type {ModeSCode, Positions} from "./tracking-types";
+import type {ModeSCode} from "@mattj65817/aviation-js";
+import type {Positions} from "./tracking-types";
 import type {TrackingAction} from "./TrackingState";
 
 /**

@@ -3,8 +3,8 @@ import {freeze, immerable} from "immer";
 import {isADSBXErrorResponse} from "./adsbx-types";
 
 import type {AxiosInstance, AxiosResponse} from "axios";
+import type {ModeSCode} from "@mattj65817/aviation-js";
 import type {ADSBXErrorResponse, ADSBXPositionResponse} from "./adsbx-types";
-import type {ModeSCode} from "../tracking-types";
 
 /**
  * {@link ADSBXClient} retrieves aircraft position data from a provider implementing the ADSBX v2 API (such as

@@ -1,9 +1,5 @@
 import {GeoCoordinates} from "../flight-types";
-
-/**
- * Hexadecimal Mode S code.
- */
-export type ModeSCode = Lowercase<string>;
+import {ModeSCode} from "@mattj65817/aviation-js";
 
 /**
  * Hash of positions keyed on hexadecimal Mode S code.
@@ -34,14 +30,4 @@ export interface PositionService {
      * @param ids the Mode C hex codes.
      */
     getPositions(ids: ModeSCode[]): Promise<Positions>;
-}
-
-/**
- * Type guard for {@link ModeSCode}.
- *
- * @param value the value to check.
- */
-export function isModeSCode(value: unknown): value is ModeSCode {
-    return "string" === typeof value
-        && /[0-9a-f]{6}/g.test(value);
 }

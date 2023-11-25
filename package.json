@@ -36,6 +36,7 @@
   "author": "Matt Jensen <mjensen65816@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "@mattj65817/aviation-js": "^1.0.1",
     "@mattj65817/util-js": "^1.1.0",
     "axios": "^1.6.2",
     "axios-retry": "^3.9.1",

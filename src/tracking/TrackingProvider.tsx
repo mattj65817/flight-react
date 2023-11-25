@@ -7,8 +7,8 @@ import {TrackingContext} from "./TrackingContext";
 
 import type {DurationLike} from "luxon";
 import type {PropsWithChildren} from "react";
+import type {ModeSCode} from "@mattj65817/aviation-js";
 import type {Kinded} from "../flight-types";
-import type {ModeSCode} from "./tracking-types";
 import type {TrackingContextContents} from "./TrackingContext";
 import type {ADSBXTrackingProviderProps} from "./adsbx/ADSBXTrackingProvider";
 

@@ -1,4 +1,6 @@
-import {isModeSCode, ModeSCode} from "../tracking-types";
+import {isModeSCode} from "@mattj65817/aviation-js";
+
+import type {ModeSCode} from "@mattj65817/aviation-js";
 
 /**
  * Altitude, either on ground or feet MSL.
