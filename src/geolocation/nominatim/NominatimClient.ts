@@ -1,7 +1,8 @@
 import {freeze, immerable} from "immer";
 import {AxiosInstance, AxiosResponse, isAxiosError} from "axios";
-import {GeoCoordinates} from "../../flight-types";
 import {isNominatimError, NominatimPlace, NominatimResponse} from "./nominatim-types";
+
+import type {GeoCoordinates} from "@mattj65817/aviation-js";
 
 /**
  * {@link NominatimClient} handles low level interaction with Nominatim API services.

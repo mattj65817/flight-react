@@ -4,7 +4,8 @@ import {ReverseGeolocationContext} from "./ReverseGeolocationContext";
 import NominatimReverseGeolocationProvider from "./nominatim/NominatimReverseGeolocationProvider";
 
 import type {PropsWithChildren} from "react";
-import type {GeoCoordinates, Kinded} from "../flight-types";
+import type {GeoCoordinates} from "@mattj65817/aviation-js";
+import type {Kinded} from "../flight-types";
 import type {ReverseGeolocationContextContents} from "./ReverseGeolocationContext";
 import type {NominatimReverseGeolocationProviderProps} from "./nominatim/NominatimReverseGeolocationProvider";
 import {ReverseGeolocationState} from "./ReverseGeolocationState";

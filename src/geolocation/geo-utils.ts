@@ -1,6 +1,7 @@
 import {freeze} from "immer";
 import _ from "lodash";
-import {GeoCoordinates} from "../flight-types";
+
+import type {GeoCoordinates} from "@mattj65817/aviation-js";
 
 /**
  * Calculate the coordinates of the point on some `course` at some `distance` (in nautical miles) from some `from`

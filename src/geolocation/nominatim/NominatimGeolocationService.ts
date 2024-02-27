@@ -1,7 +1,7 @@
 import {freeze, immerable} from "immer";
 import {NominatimClient} from "./NominatimClient";
 
-import type {GeoCoordinates} from "../../flight-types";
+import type {GeoCoordinates} from "@mattj65817/aviation-js";
 import type {GeolocationService} from "../geolocation-types";
 
 export class NominatimGeolocationService implements GeolocationService {

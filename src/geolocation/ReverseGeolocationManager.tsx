@@ -1,9 +1,9 @@
 import {useCallback, useEffect} from "react";
+import {DateTime} from "luxon";
 import {useReverseGeolocation} from "./ReverseGeolocationContext";
 
+import type {GeoCoordinates} from "@mattj65817/aviation-js";
 import type {GeolocationService} from "./geolocation-types";
-import {DateTime} from "luxon";
-import {GeoCoordinates} from "../flight-types";
 
 /**
  * Properties for a {@link ReverseGeolocationManager} component.

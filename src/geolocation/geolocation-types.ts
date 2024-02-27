@@ -1,4 +1,4 @@
-import {GeoCoordinates} from "../flight-types";
+import type {GeoCoordinates} from "@mattj65817/aviation-js";
 
 /**
  * Service which provides forward and/or reverse geolocation functions.

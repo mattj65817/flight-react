@@ -1,7 +1,9 @@
 import {freeze, immerable, produce} from "immer";
 import _ from "lodash";
-import {GeoCoordinates, Timestamped} from "../flight-types";
 import {pointToPointCourseDistance} from "./geo-utils";
+
+import type {GeoCoordinates} from "@mattj65817/aviation-js";
+import type {Timestamped} from "../flight-types";
 
 /**
  * Configuration for creating an initial {@link ReverseGeolocationState}.

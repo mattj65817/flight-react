@@ -1,5 +1,4 @@
-import {GeoCoordinates} from "../flight-types";
-import {ModeSCode} from "@mattj65817/aviation-js";
+import type {GeoCoordinates, ModeSCode} from "@mattj65817/aviation-js";
 
 /**
  * Hash of positions keyed on hexadecimal Mode S code.
