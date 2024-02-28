@@ -1,5 +1,10 @@
-import {DateTime} from "luxon";
-import {AxiosInstance, CreateAxiosDefaults} from "axios";
+import { DateTime } from "luxon";
+import { AxiosInstance, CreateAxiosDefaults } from "axios";
+
+/**
+ * Geographic coordinates.
+ */
+export type GeoCoordinates = [latitude: number, longitude: number];
 
 /**
  * Factory function for creating Axios instances with merged configuration.

@@ -1,0 +1,52 @@
+{
+  "kind": "chase",
+  "version": "1.0",
+  "image": {
+    "src": "./landing-distance-flaps-up.png",
+    "size": [
+      1109,
+      592
+    ]
+  },
+  "project": {
+    "src": "./landing-distance-flaps-up.wpd.json"
+  },
+  "steps": [
+    {
+      "chase": "up",
+      "along": "outsideAirTemperature",
+      "until": "pressureAltitude",
+      "unit": "feet",
+      "advance": false
+    },
+    {
+      "chase": "right",
+      "along": "pressureAltitude",
+      "until": "outsideAirTemperature",
+      "unit": "degrees celsius"
+    },
+    {
+      "chase": "right",
+      "along": "weightCorrection",
+      "until": "weight",
+      "unit": "kilograms"
+    },
+    {
+      "chase": "right",
+      "along": "windComponentCorrection",
+      "until": "windComponent",
+      "unit": "knots"
+    },
+    {
+      "chase": "right",
+      "along": "obstacleHeightCorrection",
+      "until": "obstacleHeight",
+      "unit": "meters"
+    },
+    {
+      "solve": "right",
+      "using": "landingDistance",
+      "unit": "meters"
+    }
+  ]
+}

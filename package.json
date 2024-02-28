@@ -38,7 +38,7 @@
   "dependencies": {
     "@mattj65817/aviation-js": "^1.0.1",
     "@mattj65817/util-js": "^1.1.4",
-    "axios": "^1.6.2",
+    "axios": "^1.6.7",
     "axios-retry": "^4.0.0",
     "immer": "^10.0.3",
     "lodash": "^4.17.21",
@@ -50,11 +50,10 @@
     "@types/jest": "^29.5.12",
     "@types/lodash": "^4.14.202",
     "@types/luxon": "^3.4.2",
-    "@types/qs": "^6.9.11",
-    "@types/react": "^18.2.60",
+    "@types/qs": "^6.9.12",
+    "@types/react": "^18.2.61",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
-    "axios": "^1.6.7",
     "axios-mock-adapter": "^1.22.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -80,6 +79,7 @@
   "jest": {
     "preset": "ts-jest",
     "reporters": [
+      "default",
       [
         "jest-junit",
         {

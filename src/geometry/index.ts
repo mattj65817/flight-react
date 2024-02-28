@@ -1,10 +1,18 @@
-import {contact} from "./GeometryUtils";
-import type {Box, Path, Point} from "./geometry-types";
+import { contact, interpolatePath, normalizePath, pointAt, sortPath } from "./GeometryUtils";
+import { isAxialDirection } from "./geometry-types";
+
+import type { AxialDirection, Box, Path, Point } from "./geometry-types";
 
 /* Module exports. */
 export {
-    Box,
-    Path,
-    Point,
-    contact
+  AxialDirection,
+  Box,
+  Path,
+  Point,
+  contact,
+  interpolatePath,
+  isAxialDirection,
+  normalizePath,
+  pointAt,
+  sortPath,
 };

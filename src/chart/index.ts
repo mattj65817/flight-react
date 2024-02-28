@@ -1,6 +1,6 @@
-import {Guide} from "./Guide";
+import { ChartLoader } from "./ChartLoader";
 
 /* Module exports. */
 export {
-    Guide
+  ChartLoader,
 };

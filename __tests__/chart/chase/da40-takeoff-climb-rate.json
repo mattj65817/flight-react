@@ -1,0 +1,41 @@
+{
+  "kind": "chase",
+  "version": "1.0",
+  "label": "Takeoff Climb Rate",
+  "image": {
+    "src": "./takeoff-climb-rate.png",
+    "size": [
+      1193,
+      811
+    ]
+  },
+  "project": {
+    "src": "./takeoff-climb-rate.wpd.json"
+  },
+  "steps": [
+    {
+      "chase": "up",
+      "along": "outsideAirTemperature",
+      "until": "pressureAltitude",
+      "unit": "feet",
+      "advance": false
+    },
+    {
+      "chase": "right",
+      "along": "pressureAltitude",
+      "until": "outsideAirTemperature",
+      "unit": "degrees celsius"
+    },
+    {
+      "chase": "right",
+      "along": "weightCorrection",
+      "until": "weight",
+      "unit": "kilograms"
+    },
+    {
+      "solve": "right",
+      "using": "climbRate",
+      "unit": "feet per minute"
+    }
+  ]
+}

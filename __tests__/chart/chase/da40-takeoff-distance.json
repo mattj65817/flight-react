@@ -1,0 +1,52 @@
+{
+  "kind": "chase",
+  "version": "1.0",
+  "image": {
+    "src": "./da40-takeoff-distance.png",
+    "size": [1156, 699]
+  },
+  "project": {
+    "src": "./da40-takeoff-distance.wpd.json"
+  },
+  "steps": [
+    {
+      "chase": "up",
+      "along": "outsideAirTemperature",
+      "until": "pressureAltitude",
+      "unit": "feet",
+      "advance": false
+    },
+    {
+      "chase": "right",
+      "along": "pressureAltitude",
+      "until": "outsideAirTemperature",
+      "unit": "degrees celsius"
+    },
+    {
+      "chase": "right",
+      "along": "weightCorrection",
+      "until": "weight",
+      "unit": "kilograms"
+    },
+    {
+      "chase": "right",
+      "along": {
+        "windComponent >= 0": "headwindComponentCorrection",
+        "windComponent < 0": "tailwindComponentCorrection"
+      },
+      "until": "windComponent",
+      "unit": "knots"
+    },
+    {
+      "chase": "right",
+      "along": "obstacleHeightCorrection",
+      "until": "obstacleHeight",
+      "unit": "meters"
+    },
+    {
+      "solve": "right",
+      "using": "takeoffDistance",
+      "unit": "meters"
+    }
+  ]
+}
